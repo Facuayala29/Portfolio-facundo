@@ -165,7 +165,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 
 .card--tl { left: 7%; top: 4%; width: 24vw; aspect-ratio: 16/9; }
 .card--tr { left: 63%; top: 2%; width: 12vw; aspect-ratio: 7/10; }
-.card--ml { left: 1%; top: 36%; width: 13vw; aspect-ratio: 7/10; }
+.card--ml { left: 5%; top: 36%; width: 13vw; aspect-ratio: 7/10; }
 .card--mr { left: 79%; top: 20%; width: 19vw; aspect-ratio: 16/9; }
 .card--bl { left: 10%; top: 76%; width: 11vw; aspect-ratio: 1/1; }
 .card--br { left: 64%; top: 61%; width: 27vw; aspect-ratio: 16/9; }

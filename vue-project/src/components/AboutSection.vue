@@ -15,7 +15,7 @@
             <div class="about__video-col" ref="videoColEl">
               <div class="about__video-wrap">
                 <iframe
-                  src="https://www.youtube.com/embed/dQw4w9WgXcQ?controls=1&rel=0&modestbranding=1"
+                  src="https://www.youtube.com/embed/P2YGRDogx0Q?controls=1&rel=0&modestbranding=1"
                   title="About video"
                   frameborder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
