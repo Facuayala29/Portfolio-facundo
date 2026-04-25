@@ -240,7 +240,7 @@ const emailHover = ref(false)
 }
 
 @media (max-width: 768px) {
-  .contact { padding: 6rem 1.5rem 0; }
+  .contact { padding: 6rem 1.5rem 0; overflow-x: clip; overflow-y: visible; }
   .contact__graffiti-svg--1 { display: none; }
   .contact__graffiti-svg--2 { display: block; width: 70vw; left: -10%; top: 6%; }
   .contact__content { max-width: 100%; }
