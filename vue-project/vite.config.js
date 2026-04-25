@@ -11,9 +11,7 @@ export default defineConfig({
 
     rollupOptions: {
       output: {
-        manualChunks: {
-          vue: ['vue'],
-        },
+        manualChunks: id => id.includes('node_modules/vue') ? 'vue' : undefined,
         entryFileNames: 'assets/[name]-[hash].js',
         chunkFileNames: 'assets/[name]-[hash].js',
         assetFileNames: 'assets/[name]-[hash][extname]',

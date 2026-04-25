@@ -38,7 +38,7 @@
 
     <footer class="site-footer" data-reveal="up" data-delay="0.6">
       <div class="footer-icons">
-        <a href="https://linkedin.com/in/facundoayala" target="_blank" rel="noopener" class="footer-icon-link" aria-label="LinkedIn">
+        <a href="https://www.linkedin.com/in/facundo-munoz-ayala/" target="_blank" rel="noopener" class="footer-icon-link" aria-label="LinkedIn">
           <svg viewBox="0 0 139.62 139.36" aria-hidden="true">
             <path fill="#841631" d="M35.07,0l72.85.06c10.39-.08,19.98,2.91,26.17,11.61,5.17,7.28,5.19,14.29,5.37,22.89.51,24.34-.37,48.78,0,73.16-.27,9.7-1.92,17.95-9.52,24.57-6.88,6-14.3,6.85-23.14,7.07H33.28c-10.48-.25-19.2-1.5-26.32-9.89-5.73-6.74-6.43-13.58-6.69-22.13-.75-24.74.37-49.6-.1-74.36.24-9.64,1.26-17.86,8.45-24.89C16.3.59,24.88.19,35.07,0Z"/>
             <path fill="#ece5d3" d="M111.66,111.65h-16.9l.1-30.81c-.17-14.58-21.62-13.44-21.9.55v30.25s-16.81,0-16.81,0v-55.79h15.89v7.94c3.32-4.47,8.56-7.61,14.04-8.64,6.89-1.29,13.66.44,18.94,4.99,3.43,2.95,6.36,9.64,6.65,14.13v37.36Z"/>
