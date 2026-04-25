@@ -91,6 +91,11 @@ ul, ol      { list-style: none; }
   will-change: left, top;
 }
 
+@media (pointer: coarse) {
+  body { cursor: auto; }
+  .cursor, .cursor-follower { display: none; }
+}
+
 .sr-only {
   position: absolute;
   width: 1px;

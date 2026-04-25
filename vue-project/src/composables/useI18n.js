@@ -31,8 +31,8 @@ const translations = {
         {
           title: 'Urban Echo',
           type: 'Brand Identity · Web Design · UX',
-          desc: 'A self-initiated brand concept merging urban fashion with rave culture, brutalist structures, Greek motifs, and electronic music fused into one visual system. The project covers the full design process from concept through to a web-ready UI.',
-          objective: 'Define a brand voice and visual language that authentically captures the collision of streetwear, brutalist architecture, Greek aesthetics, and the underground rave scene, then translate it into a functional web experience with UX flows, UI components, and motion direction.',
+          desc: 'A self-initiated brand concept merging urban fashion with rave culture, brutalist structures, and electronic music fused into one visual system. The project covers the full design process from concept through to a web-ready UI.',
+          objective: 'Define a brand voice and visual language that authentically captures the collision of streetwear, brutalist architecture, and the underground rave scene, then translate it into a functional web experience with UX flows, UI components, and motion direction.',
           outcome: 'A complete brand system, logo, colour palette, typography, and UI pattern library, alongside high-fidelity web mockups and a UX flow that immerses the user in the brand world from the first scroll.',
           tags: ['Branding', 'Web Design', 'UX'],
         },
@@ -41,7 +41,7 @@ const translations = {
           type: 'Information Design · Print',
           desc: 'A university information design project using the Super Mario Bros universe as the subject, turning game history, mechanics, and cultural impact into a single, visually cohesive poster.',
           objective: 'Communicate layered information in a way that feels immediately engaging rather than textbook-heavy. The challenge was balancing visual density with readability, using the game\'s iconography to guide the eye and structure the narrative.',
-          outcome: 'Awarded best infographic in the class. The poster was selected by faculty and displayed in the university hallway, recognised for its clarity, visual hierarchy, and creative use of the source material.',
+          outcome: 'Voted best in class by peers and displayed in the university hallway — recognised for turning dense game history into something genuinely engaging.',
           tags: ['Infographic', 'Print', 'Editorial'],
         },
         {
@@ -104,8 +104,8 @@ const translations = {
         {
           title: 'Urban Echo',
           type: 'Identidad de Marca · Diseño Web · UX',
-          desc: 'Una marca ficticia donde la moda urbana choca con la cultura rave, estructuras brutalistas, motivos griegos y música electrónica fusionados en una sola identidad visual.',
-          objective: 'Construir una identidad de marca y experiencia web que canalice la energía cruda del streetwear urbano, la arquitectura brutalista, la estética griega y la escena rave underground.',
+          desc: 'Una marca ficticia donde la moda urbana choca con la cultura rave, estructuras brutalistas y música electrónica fusionados en una sola identidad visual.',
+          objective: 'Construir una identidad de marca y experiencia web que canalice la energía cruda del streetwear urbano, la arquitectura brutalista y la escena rave underground.',
           outcome: 'Un sistema de marca completo, logo, paleta, tipografía, patrones UI, y un diseño web que sumerge al usuario en la colisión de esas subculturas.',
           tags: ['Branding', 'Diseño Web', 'UX'],
         },
@@ -114,7 +114,7 @@ const translations = {
           type: 'Diseño de Información · Impresión',
           desc: 'Un proyecto universitario de infografía usando el universo de Super Mario Bros para comunicar información de forma visualmente cautivadora y narrativa.',
           objective: 'Diseñar un póster que cuente una historia convincente a través del diseño de información, claro, atractivo y memorable.',
-          outcome: 'Ganó la mejor infografía entre los compañeros de clase. El póster fue seleccionado y colgado en el pasillo de la universidad.',
+          outcome: 'Votada mejor infografía de la clase y expuesta en el pasillo de la universidad — reconocida por convertir datos densos en algo genuinamente atractivo.',
           tags: ['Infografía', 'Impresión', 'Editorial'],
         },
         {

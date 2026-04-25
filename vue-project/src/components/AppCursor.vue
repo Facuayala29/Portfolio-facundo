@@ -45,6 +45,8 @@ function bindLinks() {
 }
 
 onMounted(() => {
+  if (window.matchMedia('(pointer: coarse)').matches) return
+
   window.addEventListener('mousemove', onMouseMove)
   raf = requestAnimationFrame(tick)
   bindLinks()

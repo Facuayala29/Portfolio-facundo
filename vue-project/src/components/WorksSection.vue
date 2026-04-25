@@ -324,4 +324,9 @@ onUnmounted(() => {
   position: absolute; top: 1.1rem; right: 1.2rem;
   font-size: 1.1rem; color: var(--glow);
 }
+
+@media (max-width: 768px) {
+  .carousel-wrapper { perspective-origin: 50% 52%; }
+  .carousel-stage { left: 50%; }
+}
 </style>

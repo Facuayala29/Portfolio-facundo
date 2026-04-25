@@ -385,13 +385,28 @@ onUnmounted(() => {
 
 @media (max-width: 900px) {
   .hero__photo-wrap { width: 65%; }
-  .hero__gsv--1 { width: clamp(260px, 70vw, 480px); }
-  .hero__gsv--2 { width: clamp(220px, 60vw, 400px); }
+  .hero__gsv--1 { width: clamp(260px, 70vw, 480px); bottom: -5%; }
+  .hero__gsv--2 { width: clamp(220px, 60vw, 400px); top: -3%; }
 }
 @media (max-width: 600px) {
-  .hero__photo-wrap { width: 88%; opacity: 0.45 !important; }
-  .hero__word { font-size: clamp(4rem, 22vw, 8rem); }
+  .hero { min-height: 100svh; }
+  .hero__photo-wrap { width: 90%; opacity: 0.5 !important; }
+  .hero__character { height: 65%; }
+  .hero__word { font-size: clamp(2.2rem, 14vw, 4rem); bottom: 28%; }
+  .hero__word--port { right: calc(50% + 40px); }
+  .hero__word--folio { left: calc(50% + 40px); }
   .hero__gsv--1 { width: 85vw; left: -18%; bottom: -5%; }
   .hero__gsv--2 { width: 72vw; right: -20%; top: -3%; }
+  .hero__corner { font-size: 0.5rem; letter-spacing: 0.1em; }
+  .hero__corner--tl, .hero__corner--tr { top: 4rem; }
+  .hero__corner--tl { left: 1.2rem; }
+  .hero__corner--tr { right: 1.2rem; }
+  .hero__corner--bl { left: 1.2rem; }
+  .hero__corner--br { right: 1.2rem; }
+}
+@media (max-width: 480px) {
+  .hero__character { bottom: 18%; }
+  .hero__word { bottom: 34%; }
+  .hero__photo-wrap { bottom: 5%; }
 }
 </style>

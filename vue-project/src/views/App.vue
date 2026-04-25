@@ -48,5 +48,4 @@ function onLoaderDone() {
 .app--loaded {
   opacity: 1;
 }
-
 </style>

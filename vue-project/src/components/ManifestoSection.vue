@@ -221,4 +221,23 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
   will-change: transform, opacity;
 }
 .accent { color: var(--red); }
+
+@media (min-width: 769px) and (max-width: 1100px) {
+  .card--tl { width: 320px; }
+  .card--tr { width: 160px; }
+  .card--ml { width: 170px; }
+  .card--mr { width: 260px; }
+  .card--bl { width: 150px; }
+  .card--br { width: 360px; }
+}
+
+@media (max-width: 768px) {
+  .text-block { font-size: clamp(2.2rem, 7vw, 3.4rem); }
+  .card--tl { width: 52vw; left: 2%; }
+  .card--tr { width: 28vw; left: 48%; }
+  .card--ml { width: 28vw; top: 62%; }
+  .card--mr { width: 38vw; left: 62%; }
+  .card--bl { width: 24vw; left: 38%; }
+  .card--br { width: 54vw; }
+}
 </style>

@@ -71,7 +71,7 @@ const emailHover = ref(false)
   z-index: 1;
 }
 .contact__graffiti-svg--1 {
-  width: clamp(520px, 78vw, 1020px);
+  width: min(78vw, 1020px);
   bottom: 0%;
   right: -24%;
   transform: rotate(10deg) scaleY(0.9);
@@ -91,7 +91,7 @@ const emailHover = ref(false)
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  overflow-y: clip;
+  overflow: hidden;
   padding: 9rem 2.5rem 0;
   background: var(--black);
 }
@@ -232,8 +232,19 @@ const emailHover = ref(false)
   transform: translateY(-3px);
 }
 
+@media (max-width: 1200px) {
+  .contact { min-height: auto; padding: 6rem 2rem 0; }
+  .contact__content { padding-top: 2rem; max-width: 85%; }
+  .contact__graffiti-svg--2 { display: none; }
+  .site-footer { margin-top: 3rem; }
+}
+
 @media (max-width: 768px) {
+  .contact { padding: 6rem 1.5rem 0; }
+  .contact__graffiti-svg--1 { display: none; }
+  .contact__graffiti-svg--2 { display: block; width: 70vw; left: -10%; top: 6%; }
   .contact__content { max-width: 100%; }
-  .site-footer { flex-direction: column; align-items: flex-start; }
+  .site-footer { margin-top: 4rem; padding-bottom: 1.2rem; }
+  .contact__headline { font-size: clamp(1.8rem, 8vw, 3rem); line-height: 1.1; margin-bottom: 2.5rem; }
 }
 </style>
