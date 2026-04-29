@@ -6,32 +6,38 @@
         <div class="cards" aria-hidden="true">
           <div class="card card--tl" data-z="0.9">
             <div class="card__shell">
-              <video src="/urbanecho/video2.mp4" class="card__media" autoplay muted loop playsinline />
+              <video class="card__media" autoplay muted loop playsinline preload="none">
+                <source src="/urbanecho/video2.webm" type="video/webm" />
+                <source src="/urbanecho/video2.mp4" type="video/mp4" />
+              </video>
             </div>
           </div>
           <div class="card card--tr" data-z="1.15">
             <div class="card__shell">
-              <img src="/food/poster.png" class="card__media" alt="" loading="lazy" decoding="async" />
+              <img src="/food/poster.webp" class="card__media" alt="" loading="lazy" decoding="async" />
             </div>
           </div>
           <div class="card card--ml" data-z="1.25">
             <div class="card__shell">
-              <img src="/core/cover.png" class="card__media" alt="" loading="lazy" decoding="async" />
+              <img src="/core/cover.webp" class="card__media" alt="" loading="lazy" decoding="async" />
             </div>
           </div>
           <div class="card card--mr" data-z="0.85">
             <div class="card__shell">
-              <img src="/urbanecho/mockup.png" class="card__media" alt="" loading="lazy" decoding="async" />
+              <img src="/urbanecho/mockup.webp" class="card__media" alt="" loading="lazy" decoding="async" />
             </div>
           </div>
           <div class="card card--bl" data-z="1.4">
             <div class="card__shell">
-              <img src="/greenloop/mockup.png" class="card__media" alt="" loading="lazy" decoding="async" />
+              <img src="/greenloop/mockup.webp" class="card__media" alt="" loading="lazy" decoding="async" />
             </div>
           </div>
           <div class="card card--br" data-z="0.75">
             <div class="card__shell">
-              <video src="/urbanecho/video.mp4" class="card__media" autoplay muted loop playsinline />
+              <video class="card__media" autoplay muted loop playsinline preload="none">
+                <source src="/urbanecho/video.webm" type="video/webm" />
+                <source src="/urbanecho/video.mp4" type="video/mp4" />
+              </video>
             </div>
           </div>
         </div>
@@ -69,6 +75,8 @@ function phase(p, start, end) {
 }
 
 let ticking = false
+let cards = []
+let pinEl = null
 
 function tick() {
   if (!sectionEl.value) return
@@ -80,39 +88,38 @@ function tick() {
 
   const p = Math.max(0, Math.min(1, -rect.top / (sh - vh)))
 
-  const pin = sectionEl.value.querySelector('.manifesto__pin')
-  const pinRect = pin?.getBoundingClientRect()
+  const pinRect = pinEl?.getBoundingClientRect()
   const vpCX = pinRect ? pinRect.left + pinRect.width / 2 : window.innerWidth / 2
   const vpCY = pinRect ? pinRect.top + pinRect.height / 2 : window.innerHeight / 2
 
-  sectionEl.value.querySelectorAll('.card').forEach(card => {
-    const z = parseFloat(card.dataset.z) || 1.0
-    const scale = 1 + p * z * 2.0
+  cards.forEach(card => {
+    const z = parseFloat(card.dataset.z) || 1
+    const scale = 1 + p * z * 2
     const fade = p > 0.52 ? 1 - phase(p, 0.52, 0.68) : 1
 
-    const cardCX = (pinRect ? pinRect.left : 0) + card.offsetLeft + card.offsetWidth / 2
-    const cardCY = (pinRect ? pinRect.top : 0) + card.offsetTop + card.offsetHeight / 2
+    const cardCX = (pinRect?.left ?? 0) + card.offsetLeft + card.offsetWidth / 2
+    const cardCY = (pinRect?.top ?? 0) + card.offsetTop + card.offsetHeight / 2
     const dx = cardCX - vpCX
     const dy = cardCY - vpCY
     const tx = (scale - 1) * dx
     const ty = (scale - 1) * dy
 
     card.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`
-    card.style.opacity = String(fade)
+    card.style.opacity = fade
   })
 
-  if (l1.value) l1.value.style.opacity = String(1 - phase(p, 0.70, 0.80))
-  if (l2.value) l2.value.style.opacity = String(1 - phase(p, 0.80, 0.88))
+  if (l1.value) l1.value.style.opacity = 1 - phase(p, 0.70, 0.80)
+  if (l2.value) l2.value.style.opacity = 1 - phase(p, 0.80, 0.88)
 
-  const sp = phase(p, 0.88, 1.0)
+  const sp = phase(p, 0.88, 1)
   const drift = sp * 420
 
   if (l3a.value) {
-    l3a.value.style.opacity = String(1 - sp)
+    l3a.value.style.opacity = 1 - sp
     l3a.value.style.transform = `translateX(${-drift}px)`
   }
   if (l3b.value) {
-    l3b.value.style.opacity = String(1 - sp)
+    l3b.value.style.opacity = 1 - sp
     l3b.value.style.transform = `translateX(${drift}px)`
   }
 }
@@ -123,10 +130,13 @@ function onScroll() {
   requestAnimationFrame(() => { tick(); ticking = false })
 }
 
-onMounted(async () => {
-  await nextTick()
-  window.addEventListener('scroll', onScroll, { passive: true })
-  requestAnimationFrame(() => requestAnimationFrame(tick))
+onMounted(() => {
+  nextTick(() => {
+    cards = [...sectionEl.value.querySelectorAll('.card')]
+    pinEl = sectionEl.value.querySelector('.manifesto__pin')
+    window.addEventListener('scroll', onScroll, { passive: true })
+    requestAnimationFrame(() => requestAnimationFrame(tick))
+  })
 })
 onUnmounted(() => window.removeEventListener('scroll', onScroll))
 </script>
@@ -160,7 +170,6 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 .card {
   position: absolute;
   will-change: transform, opacity;
-  transform-origin: center center;
 }
 
 .card--tl { left: 7%; top: 4%; width: 24vw; aspect-ratio: 16/9; }
@@ -232,7 +241,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 }
 
 @media (max-width: 768px) {
-  .text-block { font-size: clamp(2.2rem, 7vw, 3.4rem); }
+  .text-block { font-size: clamp(1.5rem, 6vw, 3.4rem); }
   .card--tl { width: 52vw; left: 2%; }
   .card--tr { width: 28vw; left: 48%; }
   .card--ml { width: 28vw; top: 62%; }

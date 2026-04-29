@@ -13,7 +13,8 @@ const followerEl = ref(null)
 
 let mouseX = 0, mouseY = 0
 let followerX = 0, followerY = 0
-let raf, mo
+let raf = null
+let moving = false
 
 function lerp(a, b, t) { return a + (b - a) * t }
 
@@ -22,6 +23,7 @@ function onMouseMove(e) {
   mouseY = e.clientY
   cursorEl.value.style.left = mouseX + 'px'
   cursorEl.value.style.top = mouseY + 'px'
+  if (!moving) { moving = true; raf = requestAnimationFrame(tick) }
 }
 
 function tick() {
@@ -29,35 +31,27 @@ function tick() {
   followerY = lerp(followerY, mouseY, 0.12)
   followerEl.value.style.left = followerX + 'px'
   followerEl.value.style.top  = followerY + 'px'
+  if (Math.abs(followerX - mouseX) < 0.3 && Math.abs(followerY - mouseY) < 0.3) {
+    moving = false; raf = null; return
+  }
   raf = requestAnimationFrame(tick)
 }
 
-function expand() { cursorEl.value?.classList.add('expanded') }
-function contract() { cursorEl.value?.classList.remove('expanded') }
-
-function bindLinks() {
-  document.querySelectorAll('a, button, [data-cursor]').forEach(el => {
-    el.removeEventListener('mouseenter', expand)
-    el.removeEventListener('mouseleave', contract)
-    el.addEventListener('mouseenter', expand)
-    el.addEventListener('mouseleave', contract)
-  })
+function onOver(e) {
+  cursorEl.value.classList.toggle('expanded', !!e.target.closest('a, button, [data-cursor]'))
 }
 
 onMounted(() => {
   if (window.matchMedia('(pointer: coarse)').matches) return
 
   window.addEventListener('mousemove', onMouseMove)
+  document.addEventListener('mouseover', onOver)
   raf = requestAnimationFrame(tick)
-  bindLinks()
-
-  mo = new MutationObserver(bindLinks)
-  mo.observe(document.body, { childList: true, subtree: true })
 })
 
 onUnmounted(() => {
   window.removeEventListener('mousemove', onMouseMove)
+  document.removeEventListener('mouseover', onOver)
   cancelAnimationFrame(raf)
-  mo?.disconnect()
 })
 </script>

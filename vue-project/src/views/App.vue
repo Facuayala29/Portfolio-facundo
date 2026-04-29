@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, defineAsyncComponent } from 'vue'
 import { useGlobalReveal } from '../composables/useReveal.js'
 import PageLoader from '../components/PageLoader.vue'
 import AppCursor from '../components/AppCursor.vue'
@@ -23,9 +23,9 @@ import AppNav from '../components/AppNav.vue'
 import HeroSection from '../components/HeroSection.vue'
 import ManifestoSection from '../components/ManifestoSection.vue'
 import AboutSection from '../components/AboutSection.vue'
-import WorksSection from '../components/WorksSection.vue'
-import SkillsSection from '../components/SkillsSection.vue'
-import ContactSection from '../components/ContactSection.vue'
+const WorksSection   = defineAsyncComponent(() => import('../components/WorksSection.vue'))
+const SkillsSection  = defineAsyncComponent(() => import('../components/SkillsSection.vue'))
+const ContactSection = defineAsyncComponent(() => import('../components/ContactSection.vue'))
 
 const appLoaded = ref(false)
 useGlobalReveal()

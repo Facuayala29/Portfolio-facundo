@@ -57,6 +57,9 @@ let animId = null
 let mx = 0, my = 0
 let tmx = 0, tmy = 0
 let gsvAlpha = 0
+let cachedScrollY = 0
+let heroVisible = true
+let frameTick = 0
 
 function lerp(a, b, t) { return a + (b - a) * t }
 
@@ -64,21 +67,20 @@ function initNoise() {
   const canvas = noiseEl.value
   const ctx = canvas.getContext('2d')
   let fr = 0
-  let noiseId = null
   let alive = true
+  let img = null
 
   function resize() {
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
+    img = ctx.createImageData(canvas.width, canvas.height)
   }
   resize()
   window.addEventListener('resize', resize)
 
   ;(function loop() {
     if (!alive) return
-    if (++fr % 3 === 0) {
-      const { width: w, height: h } = canvas
-      const img = ctx.createImageData(w, h)
+    if (heroVisible && ++fr % 3 === 0 && img) {
       const d = img.data
       for (let i = 0; i < d.length; i += 4) {
         const v = Math.random() * 255
@@ -87,21 +89,25 @@ function initNoise() {
       }
       ctx.putImageData(img, 0, 0)
     }
-    noiseId = requestAnimationFrame(loop)
+    requestAnimationFrame(loop)
   })()
 
   return () => {
     alive = false
-    cancelAnimationFrame(noiseId)
     window.removeEventListener('resize', resize)
   }
 }
 
 function mainLoop() {
+  animId = requestAnimationFrame(mainLoop)
+
+  // throttle to ~30fps and skip entirely when hero is off-screen
+  if (!heroVisible || ++frameTick % 2 !== 0) return
+
   mx = lerp(mx, tmx, 0.06)
   my = lerp(my, tmy, 0.06)
 
-  const sy = window.scrollY || 0
+  const sy = cachedScrollY
   const heroH = heroEl.value?.offsetHeight || 800
   const sp = Math.min(sy / heroH, 1)
 
@@ -113,29 +119,29 @@ function mainLoop() {
   if (wordPortEl.value) {
     wordPortEl.value.style.transform =
       `perspective(900px) translateX(${ux}px) translateY(${uy}px) rotateY(${rotY}deg) rotateX(${rotX}deg)`
-    wordPortEl.value.style.opacity = String(Math.max(0, 1 - sp * 3.0))
+    wordPortEl.value.style.opacity = Math.max(0, 1 - sp * 3)
   }
 
   if (wordFolioEl.value) {
     wordFolioEl.value.style.transform =
       `perspective(900px) translateX(${ux}px) translateY(${uy}px) rotateY(${rotY}deg) rotateX(${rotX}deg)`
-    wordFolioEl.value.style.opacity = String(Math.max(0, 1 - sp * 3.0))
+    wordFolioEl.value.style.opacity = Math.max(0, 1 - sp * 3)
   }
 
   if (characterEl.value) {
     characterEl.value.style.transform =
       `perspective(900px) translateX(calc(-50% + ${ux}px)) translateY(${uy}px) rotateY(${rotY * 0.55}deg) rotateX(${rotX * 0.55}deg)`
-    characterEl.value.style.opacity = String(Math.max(0, 1 - sp * 3.0))
+    characterEl.value.style.opacity = Math.max(0, 1 - sp * 3)
   }
 
   if (photoWrapEl.value) {
     photoWrapEl.value.style.transform =
-      `translateX(-50%) translateY(${sy * 0.10}px) translateX(${mx * 8}px)`
-    photoWrapEl.value.style.opacity = String(Math.max(0, 1 - sp * 1.6))
+      `translate3d(calc(-50% + ${mx * 8}px), ${sy * 0.10}px, 0)`
+    photoWrapEl.value.style.opacity = Math.max(0, 1 - sp * 1.6)
   }
 
   if (scrollHintEl.value) {
-    scrollHintEl.value.style.opacity = String(Math.max(0, 1 - sp * 5))
+    scrollHintEl.value.style.opacity = Math.max(0, 1 - sp * 5)
   }
 
   if (heroEl.value?.classList.contains('loaded') && gsvAlpha < 1) {
@@ -145,14 +151,12 @@ function mainLoop() {
 
   if (gsv1El.value) {
     gsv1El.value.style.transform = `rotate(-11deg) scaleX(-1) translate(${mx * 11}px, ${sy * 0.14 + my * 7}px)`
-    gsv1El.value.style.opacity = String(gsvOp * 0.92)
+    gsv1El.value.style.opacity = gsvOp * 0.92
   }
   if (gsv2El.value) {
     gsv2El.value.style.transform = `rotate(8deg) scaleY(0.92) translate(${mx * 7}px, ${sy * 0.09 + my * 5}px)`
-    gsv2El.value.style.opacity = String(gsvOp * 0.96)
+    gsv2El.value.style.opacity = gsvOp * 0.96
   }
-
-  animId = requestAnimationFrame(mainLoop)
 }
 
 function onMouseMove(e) {
@@ -160,11 +164,24 @@ function onMouseMove(e) {
   tmy = (e.clientY / window.innerHeight - 0.5) * 2
 }
 
+function onScroll() {
+  cachedScrollY = window.scrollY || 0
+}
+
 let cleanupNoise
+let visibilityObserver
 
 onMounted(() => {
   cleanupNoise = initNoise()
   window.addEventListener('mousemove', onMouseMove, { passive: true })
+  window.addEventListener('scroll', onScroll, { passive: true })
+
+  visibilityObserver = new IntersectionObserver(
+    entries => { heroVisible = entries[0].isIntersecting },
+    { threshold: 0 }
+  )
+  visibilityObserver.observe(heroEl.value)
+
   setTimeout(() => heroEl.value?.classList.add('loaded'), 120)
   animId = requestAnimationFrame(mainLoop)
 })
@@ -172,6 +189,8 @@ onMounted(() => {
 onUnmounted(() => {
   cancelAnimationFrame(animId)
   window.removeEventListener('mousemove', onMouseMove)
+  window.removeEventListener('scroll', onScroll)
+  visibilityObserver?.disconnect()
   cleanupNoise?.()
 })
 </script>
@@ -206,14 +225,16 @@ onUnmounted(() => {
   pointer-events: none;
   user-select: none;
   will-change: transform, opacity;
+  backface-visibility: hidden;
   opacity: 0;
   transition: opacity 1.4s ease 0.3s;
   line-height: 1;
+  z-index: 3;
 }
 .hero.loaded .hero__word { opacity: 1; }
 
-.hero__word--port  { right: calc(50% + 80px); left: auto; z-index: 3; }
-.hero__word--folio { left: calc(50% + 80px); right: auto; z-index: 3; }
+.hero__word--port  { right: calc(50% + 80px); }
+.hero__word--folio { left: calc(50% + 80px); }
 
 .hero__character {
   position: absolute;
@@ -226,6 +247,8 @@ onUnmounted(() => {
   pointer-events: none;
   user-select: none;
   mix-blend-mode: screen;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
   opacity: 0;
   transition: opacity 1.4s ease 0.3s;
 }
@@ -270,6 +293,7 @@ onUnmounted(() => {
   user-select: none;
   opacity: 0;
   will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 .hero__gsv--1 {
   width: clamp(560px, 86vw, 1120px);
@@ -390,11 +414,12 @@ onUnmounted(() => {
 }
 @media (max-width: 600px) {
   .hero { min-height: 100svh; }
+  .hero__vignette { display: none; }
   .hero__photo-wrap { width: 90%; opacity: 0.5 !important; }
   .hero__character { height: 65%; }
-  .hero__word { font-size: clamp(2.2rem, 14vw, 4rem); bottom: 28%; }
-  .hero__word--port { right: calc(50% + 40px); }
-  .hero__word--folio { left: calc(50% + 40px); }
+  .hero__word { font-size: clamp(1.5rem, 9.5vw, 2.6rem); bottom: 28%; }
+  .hero__word--port { right: calc(50% + 28px); }
+  .hero__word--folio { left: calc(50% + 28px); }
   .hero__gsv--1 { width: 85vw; left: -18%; bottom: -5%; }
   .hero__gsv--2 { width: 72vw; right: -20%; top: -3%; }
   .hero__corner { font-size: 0.5rem; letter-spacing: 0.1em; }

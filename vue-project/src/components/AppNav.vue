@@ -23,14 +23,9 @@
       @click.stop
     >
       <div class="menu-lang">
-        <template v-for="(lang, i) in ['EN', 'ES']" :key="lang">
-          <button
-            class="menu-lang-btn"
-            :class="{ active: locale === lang }"
-            @click="setLocale(lang)"
-          >{{ lang }}</button>
-          <span v-if="i < 1" class="menu-lang-sep">|</span>
-        </template>
+        <button class="menu-lang-btn" :class="{ active: locale === 'EN' }" @click="setLocale('EN')">EN</button>
+        <span class="menu-lang-sep">|</span>
+        <button class="menu-lang-btn" :class="{ active: locale === 'ES' }" @click="setLocale('ES')">ES</button>
       </div>
       <ul class="menu-list" role="list">
         <li v-for="item in menuItems" :key="item.key" class="menu-item">

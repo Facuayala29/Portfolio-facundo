@@ -57,14 +57,15 @@ const bioWords = computed(() => {
   return typeof bio === 'string' ? bio.split(' ') : []
 })
 
-function easeOut(t) { return 1 - Math.pow(1 - t, 3) }
-function easeInOut(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2 }
+function easeOut(x) { return 1 - Math.pow(1 - x, 3) }
+function easeInOut(x) { return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2 }
 function phase(p, s, e) { return Math.max(0, Math.min(1, (p - s) / (e - s))) }
 
 let ticking = false
 let measured = false
 let natOffX = 0
 let natOffY = 0
+let wordEls = []
 
 function measure() {
   if (!pinEl.value || !videoColEl.value) return
@@ -98,10 +99,7 @@ function tick() {
 
   if (!measured) measure()
 
-  if (pinEl.value) {
-    const alpha = Math.round(phase(p, 0, 0.15) * 255).toString(16).padStart(2, '0')
-    pinEl.value.style.background = `#0a0a0c${alpha}`
-  }
+  pinEl.value.style.background = `rgba(10,10,12,${phase(p, 0, 0.15).toFixed(2)})`
 
   if (headerEl.value) {
     const hp = easeOut(phase(p, 0.08, 0.22))
@@ -127,13 +125,10 @@ function tick() {
     textColEl.value.style.opacity = tp
     textColEl.value.style.transform = `translateX(${(1 - tp) * 80}px)`
 
-    const wordEls = textColEl.value.querySelectorAll('.word-span')
     const total = wordEls.length
     wordEls.forEach((span, i) => {
       const threshold = 0.58 + (i / (total - 1)) * 0.42
-      span.style.color = p >= threshold
-        ? 'rgba(245,245,240,0.82)'
-        : 'rgba(245,245,240,0.15)'
+      span.style.color = p >= threshold ? 'rgba(245,245,240,0.82)' : 'rgba(245,245,240,0.15)'
     })
   }
 }
@@ -144,10 +139,12 @@ function onScroll() {
   requestAnimationFrame(() => { tick(); ticking = false })
 }
 
-onMounted(async () => {
-  await nextTick()
-  requestAnimationFrame(() => { measure(); requestAnimationFrame(tick) })
-  window.addEventListener('scroll', onScroll, { passive: true })
+onMounted(() => {
+  nextTick(() => {
+    wordEls = [...textColEl.value.querySelectorAll('.word-span')]
+    requestAnimationFrame(() => { measure(); requestAnimationFrame(tick) })
+    window.addEventListener('scroll', onScroll, { passive: true })
+  })
 })
 onUnmounted(() => window.removeEventListener('scroll', onScroll))
 </script>
@@ -157,7 +154,6 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
   position: absolute;
   pointer-events: none;
   user-select: none;
-  z-index: 1;
 }
 .about__graffiti-svg--r {
   width: clamp(320px, 48vw, 680px);

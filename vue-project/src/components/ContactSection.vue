@@ -22,15 +22,10 @@
       </h2>
 
       <div class="contact__cta" data-reveal="up" data-delay="0.25">
-        <a
-          href="mailto:facuayala29@gmail.com"
-          class="contact__email"
-          @mouseenter="emailHover = true"
-          @mouseleave="emailHover = false"
-        >
+        <a href="mailto:facuayala29@gmail.com" class="contact__email">
           <span class="email-text">facuayala29@gmail.com</span>
-          <span class="email-line" :class="{ active: emailHover }"></span>
-          <span class="email-arrow" :class="{ active: emailHover }">↗</span>
+          <span class="email-line"></span>
+          <span class="email-arrow">↗</span>
         </a>
         <p class="contact__avail" data-reveal="up" data-delay="0.45">Available for freelance &amp; full-time · Based in Aarhus, DK</p>
       </div>
@@ -57,11 +52,6 @@
   </section>
 </template>
 
-<script setup>
-import { ref } from 'vue'
-
-const emailHover = ref(false)
-</script>
 
 <style scoped>
 .contact__graffiti-svg {
@@ -179,7 +169,7 @@ const emailHover = ref(false)
   transform: scaleX(0);
   transition: transform 0.55s var(--ease-out);
 }
-.email-line.active { transform: scaleX(1); }
+.contact__email:hover .email-line { transform: scaleX(1); }
 
 .email-arrow {
   font-size: 0.8em;
@@ -188,7 +178,7 @@ const emailHover = ref(false)
   transition: opacity 0.3s, transform 0.4s var(--ease-out);
   color: var(--red);
 }
-.email-arrow.active { opacity: 1; transform: translate(0, 0); }
+.contact__email:hover .email-arrow { opacity: 1; transform: translate(0, 0); }
 
 .contact__avail {
   margin-top: 1.2rem;

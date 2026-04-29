@@ -1,13 +1,11 @@
 import { onMounted, onUnmounted } from 'vue'
 
-const EASE = 'cubic-bezier(0.16, 1, 0.3, 1)'
-
 function getTransform(type, above) {
+  if (type === 'left') return 'translateX(-58px)'
+  if (type === 'right') return 'translateX(58px)'
   const d = above ? -1 : 1
   if (type === 'up') return `translateY(${d * 58}px)`
   if (type === 'down') return `translateY(${-d * 58}px)`
-  if (type === 'left') return 'translateX(-58px)'
-  if (type === 'right') return 'translateX(58px)'
   if (type === 'scale') return `scale(0.86) translateY(${d * 28}px)`
   return 'none'
 }

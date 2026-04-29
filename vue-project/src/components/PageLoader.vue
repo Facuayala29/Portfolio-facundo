@@ -10,7 +10,7 @@
           <div class="loader__fill" :style="{ transform: `scaleX(${progress / 100})` }"></div>
         </div>
         <div class="loader__pct">
-          <span class="pct-num">{{ displayPct }}</span>
+          <span class="pct-num">{{ Math.round(progress) }}</span>
           <span class="pct-sym">%</span>
         </div>
       </div>
@@ -20,13 +20,12 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 
 defineEmits(['done'])
 
 const visible = ref(true)
 const progress = ref(0)
-const displayPct = computed(() => Math.round(progress.value))
 
 onMounted(() => {
   const duration = 2000

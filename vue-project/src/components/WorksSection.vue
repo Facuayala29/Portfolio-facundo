@@ -111,11 +111,11 @@ const base = {
 }
 
 const projectStyles = [
-  { ...base, cardImage: '/urbanecho/mockup.png', images: ['/urbanecho/sketch1.jpeg', '/urbanecho/sketch2.jpeg', '/urbanecho/mockup.png', '/urbanecho/video.mp4', '/urbanecho/video2.mp4'] },
-  { ...base, cardImage: '/mario/poster.png', images: ['/mario/sketch.jpeg', '/mario/poster.png', '/mario/print.jpeg'] },
-  { ...base, cardImage: '/core/cover.png', images: ['/core/logo.png', '/core/magazine.pdf', '/core/magazine-cover.png', '/core/mockup.png'] },
-  { ...base, cardImage: '/food/poster.png', images: ['/food/sketch.jpeg', '/food/poster.png', '/food/mockup.png'] },
-  { ...base, cardImage: '/greenloop/mockup.png', images: ['/greenloop/sketch.jpeg', '/greenloop/logo-green.png', '/greenloop/mockup.png'] },
+  { ...base, cardImage: '/urbanecho/mockup.webp', images: ['/urbanecho/sketch1.jpeg', '/urbanecho/sketch2.jpeg', '/urbanecho/mockup.webp', '/urbanecho/video.mp4', '/urbanecho/video2.mp4'] },
+  { ...base, cardImage: '/mario/poster.webp', images: ['/mario/sketch.jpeg', '/mario/poster.webp', '/mario/print.jpeg'] },
+  { ...base, cardImage: '/core/cover.webp', images: ['/core/logo.webp', '/core/magazine.pdf', '/core/magazine-cover.webp', '/core/mockup.webp'] },
+  { ...base, cardImage: '/food/poster.webp', images: ['/food/sketch.jpeg', '/food/poster.webp', '/food/mockup.webp'] },
+  { ...base, cardImage: '/greenloop/mockup.webp', images: ['/greenloop/sketch.jpeg', '/greenloop/logo-green.webp', '/greenloop/mockup.webp'] },
 ]
 
 const allProjects = computed(() => {
@@ -133,7 +133,7 @@ onMounted(() => {
 })
 onUnmounted(() => {
   window.removeEventListener('scroll', onScroll)
-  if (animId) cancelAnimationFrame(animId)
+  cancelAnimationFrame(animId)
 })
 </script>
 
@@ -165,7 +165,6 @@ onUnmounted(() => {
   width: clamp(480px, 72vw, 920px);
   bottom: -10%;
   left: -34%;
-  right: auto;
   transform: rotate(-13deg) scaleY(0.88);
   opacity: 0.9;
 }
@@ -222,7 +221,6 @@ onUnmounted(() => {
   overflow: hidden;
   border: 1px solid rgba(255,255,255,0.08);
   background: #0d0d0d;
-  text-decoration: none;
   color: var(--white);
   cursor: none;
   transform: rotateY(var(--angle)) translateZ(280px);
@@ -260,7 +258,6 @@ onUnmounted(() => {
   inset: 0;
   width: 100%; height: 100%;
   object-fit: cover;
-  object-position: center;
 }
 .wc-img--contain {
   object-fit: contain;
