@@ -1,7 +1,7 @@
 <template>
   <section class="manifesto" ref="sectionEl">
     <div class="manifesto__scroll">
-      <div class="manifesto__pin">
+      <div class="manifesto__pin" ref="pinEl">
 
         <div class="cards" aria-hidden="true">
           <div class="card card--tl" data-z="0.9">
@@ -65,6 +65,7 @@ import { useI18n } from '../composables/useI18n.js'
 const { t } = useI18n()
 
 const sectionEl = ref(null)
+const pinEl = ref(null)
 const l1 = ref(null)
 const l2 = ref(null)
 const l3a = ref(null)
@@ -81,7 +82,7 @@ let vpCX = 0, vpCY = 0
 let cardData = []
 
 function cacheLayout() {
-  vh = window.innerHeight
+  vh = pinEl.value?.offsetHeight || window.innerHeight
   vpCX = window.innerWidth / 2
   vpCY = vh / 2
   if (sectionEl.value) {
@@ -154,6 +155,7 @@ onUnmounted(() => {
 }
 .manifesto__scroll {
   height: 500vh;
+  height: 500svh;
   position: relative;
   overflow-x: clip;
 }
@@ -161,6 +163,7 @@ onUnmounted(() => {
   position: sticky;
   top: 0;
   height: 100vh;
+  height: 100svh;
   overflow: hidden;
   display: flex;
   align-items: center;

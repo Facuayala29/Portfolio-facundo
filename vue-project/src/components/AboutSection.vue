@@ -100,7 +100,7 @@ function measure() {
 }
 
 function cacheLayout() {
-  vh = window.innerHeight
+  vh = pinEl.value?.offsetHeight || window.innerHeight
   if (aboutEl.value) {
     scrollable = aboutEl.value.offsetHeight - vh
     sectionTop = aboutEl.value.offsetTop
@@ -187,14 +187,15 @@ onUnmounted(() => {
 
 .about {
   position: relative;
-  /* pulls up so the about pin fires during manifesto's last split phase */
   margin-top: -60vh;
+  margin-top: -60svh;
   z-index: 2;
 }
 .about__scroll {
   position: relative;
   z-index: 3;
   height: 280vh;
+  height: 280svh;
   overflow-x: clip;
 }
 
@@ -202,6 +203,7 @@ onUnmounted(() => {
   position: sticky;
   top: 0;
   height: 100vh;
+  height: 100svh;
   overflow: hidden;
   display: flex;
   flex-direction: column;

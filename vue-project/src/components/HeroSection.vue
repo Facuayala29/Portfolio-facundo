@@ -128,8 +128,12 @@ function mainLoop() {
   }
 
   if (characterEl.value) {
-    characterEl.value.style.transform =
-      `perspective(900px) translateX(calc(-50% + ${ux}px)) translateY(${uy}px) rotateY(${rotY * 0.55}deg) rotateX(${rotX * 0.55}deg)`
+    if (window.innerWidth > 600) {
+      characterEl.value.style.transform =
+        `perspective(900px) translateX(calc(-50% + ${ux}px)) translateY(${uy}px) rotateY(${rotY * 0.55}deg) rotateX(${rotX * 0.55}deg)`
+    } else {
+      characterEl.value.style.transform = `translateX(calc(-50% + ${ux}px)) translateY(${uy}px)`
+    }
     characterEl.value.style.opacity = Math.max(0, 1 - sp * 3)
   }
 
@@ -413,8 +417,10 @@ onUnmounted(() => {
 }
 @media (max-width: 600px) {
   .hero { min-height: 100svh; }
-  .hero__photo-wrap { width: 90%; will-change: auto; }
-  .hero__character { height: 65%; }
+  /* Skip opacity transition — prevents GPU layer that breaks mix-blend-mode in Safari */
+  .hero__photo-wrap { width: 90%; will-change: auto; opacity: 1; transition: none; }
+  /* Remove GPU promotion — prevents mix-blend-mode breaking in Safari */
+  .hero__character { height: 65%; will-change: auto; opacity: 0.92; transition: none; }
   .hero__word { font-size: clamp(1.9rem, 11.5vw, 2.8rem); bottom: 28%; }
   .hero__word--port { right: auto; left: 3vw; }
   .hero__word--folio { left: auto; right: 7vw; }
@@ -425,7 +431,7 @@ onUnmounted(() => {
   .hero__corner--tl { left: 1.2rem; }
   .hero__corner--tr { right: 1.2rem; }
   .hero__corner--bl { left: 1.2rem; }
-  .hero__corner--br { right: 1.2rem; }
+  .hero__corner--br { right: 1.2rem; white-space: nowrap; }
 }
 @media (max-width: 480px) {
   .hero__character { bottom: 18%; }
