@@ -101,7 +101,6 @@ function initNoise() {
 function mainLoop() {
   animId = requestAnimationFrame(mainLoop)
 
-  // throttle to ~30fps and skip entirely when hero is off-screen
   if (!heroVisible || ++frameTick % 2 !== 0) return
 
   mx = lerp(mx, tmx, 0.06)
@@ -414,12 +413,11 @@ onUnmounted(() => {
 }
 @media (max-width: 600px) {
   .hero { min-height: 100svh; }
-  .hero__vignette { display: none; }
-  .hero__photo-wrap { width: 90%; opacity: 0.5 !important; }
+  .hero__photo-wrap { width: 90%; }
   .hero__character { height: 65%; }
-  .hero__word { font-size: clamp(1.5rem, 9.5vw, 2.6rem); bottom: 28%; }
-  .hero__word--port { right: calc(50% + 28px); }
-  .hero__word--folio { left: calc(50% + 28px); }
+  .hero__word { font-size: clamp(1.9rem, 11.5vw, 2.8rem); bottom: 28%; }
+  .hero__word--port { right: auto; left: 3vw; }
+  .hero__word--folio { left: auto; right: 3vw; }
   .hero__gsv--1 { width: 85vw; left: -18%; bottom: -5%; }
   .hero__gsv--2 { width: 72vw; right: -20%; top: -3%; }
   .hero__corner { font-size: 0.5rem; letter-spacing: 0.1em; }
@@ -432,6 +430,5 @@ onUnmounted(() => {
 @media (max-width: 480px) {
   .hero__character { bottom: 18%; }
   .hero__word { bottom: 34%; }
-  .hero__photo-wrap { bottom: 5%; }
 }
 </style>

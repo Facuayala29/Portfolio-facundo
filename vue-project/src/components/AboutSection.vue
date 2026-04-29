@@ -15,12 +15,17 @@
             <div class="about__video-col" ref="videoColEl">
               <div class="about__video-wrap">
                 <iframe
-                  src="https://www.youtube.com/embed/P2YGRDogx0Q?controls=1&rel=0&modestbranding=1"
+                  v-if="videoActive"
+                  src="https://www.youtube.com/embed/P2YGRDogx0Q?controls=1&rel=0&modestbranding=1&autoplay=1"
                   title="About video"
                   frameborder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowfullscreen
                 ></iframe>
+                <button v-else class="video-facade" @click="videoActive = true" aria-label="Play video">
+                  <img src="https://img.youtube.com/vi/P2YGRDogx0Q/hqdefault.jpg" alt="" loading="lazy" decoding="async" />
+                  <span class="video-facade__play" aria-hidden="true"></span>
+                </button>
               </div>
               <div class="about__video-glow"></div>
             </div>
@@ -51,6 +56,7 @@ const pinEl = ref(null)
 const headerEl = ref(null)
 const videoColEl = ref(null)
 const textColEl = ref(null)
+const videoActive = ref(false)
 
 const bioWords = computed(() => {
   const bio = t('about.bio')
@@ -66,6 +72,8 @@ let measured = false
 let natOffX = 0
 let natOffY = 0
 let wordEls = []
+let vh = 0
+let scrollable = 0
 
 function measure() {
   if (!pinEl.value || !videoColEl.value) return
@@ -78,7 +86,7 @@ function measure() {
   const pr = pinEl.value.getBoundingClientRect()
   const vr = videoColEl.value.getBoundingClientRect()
   const pinCX = pr.left + pr.width / 2
-  const pinCY = window.innerHeight / 2
+  const pinCY = vh / 2
   const vCX = vr.left + vr.width / 2
   const vCY = vr.top + vr.height / 2 - pr.top
 
@@ -90,11 +98,16 @@ function measure() {
   measured = true
 }
 
+function cacheLayout() {
+  vh = window.innerHeight
+  if (aboutEl.value) scrollable = aboutEl.value.offsetHeight - vh
+  measured = false
+}
+
 function tick() {
   if (!aboutEl.value || !pinEl.value || !videoColEl.value) return
 
   const rect = aboutEl.value.getBoundingClientRect()
-  const scrollable = aboutEl.value.offsetHeight - window.innerHeight
   const p = Math.max(0, Math.min(1, -rect.top / scrollable))
 
   if (!measured) measure()
@@ -142,11 +155,16 @@ function onScroll() {
 onMounted(() => {
   nextTick(() => {
     wordEls = [...textColEl.value.querySelectorAll('.word-span')]
+    cacheLayout()
     requestAnimationFrame(() => { measure(); requestAnimationFrame(tick) })
     window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', cacheLayout, { passive: true })
   })
 })
-onUnmounted(() => window.removeEventListener('scroll', onScroll))
+onUnmounted(() => {
+  window.removeEventListener('scroll', onScroll)
+  window.removeEventListener('resize', cacheLayout)
+})
 </script>
 
 <style scoped>
@@ -242,6 +260,50 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
   inset: 0;
   width: 100%;
   height: 100%;
+}
+.video-facade {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: none;
+  background: #000;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.video-facade img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.85;
+}
+.video-facade__play {
+  position: relative;
+  z-index: 1;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(6px);
+  border: 1.5px solid rgba(255,255,255,0.3);
+  transition: background 0.2s;
+}
+.video-facade__play::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 54%;
+  transform: translate(-50%, -50%);
+  border-style: solid;
+  border-width: 10px 0 10px 18px;
+  border-color: transparent transparent transparent #fff;
+}
+.video-facade:hover .video-facade__play {
+  background: rgba(255,255,255,0.28);
 }
 .about__video-glow {
   position: absolute;

@@ -76,36 +76,36 @@ function phase(p, start, end) {
 
 let ticking = false
 let cards = []
-let pinEl = null
+let vh = 0, sectionH = 0
+let vpCX = 0, vpCY = 0
+let cardData = []
+
+function cacheLayout() {
+  vh = window.innerHeight
+  vpCX = window.innerWidth / 2
+  vpCY = vh / 2
+  if (sectionEl.value) sectionH = sectionEl.value.offsetHeight
+  cardData = cards.map(card => ({
+    el: card,
+    cx: card.offsetLeft + card.offsetWidth / 2,
+    cy: card.offsetTop + card.offsetHeight / 2,
+    z: parseFloat(card.dataset.z) || 1,
+  }))
+}
 
 function tick() {
-  if (!sectionEl.value) return
+  if (!sectionEl.value || sectionH - vh <= 0) return
 
   const rect = sectionEl.value.getBoundingClientRect()
-  const sh = sectionEl.value.offsetHeight
-  const vh = window.innerHeight
-  if (sh - vh <= 0) return
+  const p = Math.max(0, Math.min(1, -rect.top / (sectionH - vh)))
 
-  const p = Math.max(0, Math.min(1, -rect.top / (sh - vh)))
-
-  const pinRect = pinEl?.getBoundingClientRect()
-  const vpCX = pinRect ? pinRect.left + pinRect.width / 2 : window.innerWidth / 2
-  const vpCY = pinRect ? pinRect.top + pinRect.height / 2 : window.innerHeight / 2
-
-  cards.forEach(card => {
-    const z = parseFloat(card.dataset.z) || 1
+  cardData.forEach(({ el, cx, cy, z }) => {
     const scale = 1 + p * z * 2
     const fade = p > 0.52 ? 1 - phase(p, 0.52, 0.68) : 1
-
-    const cardCX = (pinRect?.left ?? 0) + card.offsetLeft + card.offsetWidth / 2
-    const cardCY = (pinRect?.top ?? 0) + card.offsetTop + card.offsetHeight / 2
-    const dx = cardCX - vpCX
-    const dy = cardCY - vpCY
-    const tx = (scale - 1) * dx
-    const ty = (scale - 1) * dy
-
-    card.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`
-    card.style.opacity = fade
+    const tx = (scale - 1) * (cx - vpCX)
+    const ty = (scale - 1) * (cy - vpCY)
+    el.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`
+    el.style.opacity = fade
   })
 
   if (l1.value) l1.value.style.opacity = 1 - phase(p, 0.70, 0.80)
@@ -133,12 +133,16 @@ function onScroll() {
 onMounted(() => {
   nextTick(() => {
     cards = [...sectionEl.value.querySelectorAll('.card')]
-    pinEl = sectionEl.value.querySelector('.manifesto__pin')
+    cacheLayout()
     window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', cacheLayout, { passive: true })
     requestAnimationFrame(() => requestAnimationFrame(tick))
   })
 })
-onUnmounted(() => window.removeEventListener('scroll', onScroll))
+onUnmounted(() => {
+  window.removeEventListener('scroll', onScroll)
+  window.removeEventListener('resize', cacheLayout)
+})
 </script>
 
 <style scoped>

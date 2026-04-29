@@ -73,6 +73,7 @@ const CARD_STEP = 360 / N
 let currentAngle = 0
 let targetAngle = 0
 let animId = null
+let vh = 0, sectionH = 0
 
 function lerp(a, b, t) { return a + (b - a) * t }
 
@@ -94,12 +95,15 @@ function tick() {
   animId = requestAnimationFrame(tick)
 }
 
+function cacheLayout() {
+  vh = window.innerHeight
+  if (sectionEl.value) sectionH = sectionEl.value.offsetHeight
+}
+
 function onScroll() {
-  if (!sectionEl.value) return
+  if (!sectionEl.value || sectionH - vh <= 0) return
   const rect = sectionEl.value.getBoundingClientRect()
-  const sh = sectionEl.value.offsetHeight
-  const vh = window.innerHeight
-  const progress = Math.max(0, Math.min(1, -rect.top / (sh - vh)))
+  const progress = Math.max(0, Math.min(1, -rect.top / (sectionH - vh)))
   targetAngle = progress * (N - 1) * CARD_STEP
 }
 
@@ -128,11 +132,15 @@ const allProjects = computed(() => {
 })
 
 onMounted(() => {
+  cacheLayout()
+  onScroll()
   window.addEventListener('scroll', onScroll, { passive: true })
+  window.addEventListener('resize', cacheLayout, { passive: true })
   animId = requestAnimationFrame(tick)
 })
 onUnmounted(() => {
   window.removeEventListener('scroll', onScroll)
+  window.removeEventListener('resize', cacheLayout)
   cancelAnimationFrame(animId)
 })
 </script>
