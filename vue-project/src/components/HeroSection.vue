@@ -417,9 +417,7 @@ onUnmounted(() => {
 }
 @media (max-width: 600px) {
   .hero { min-height: 100svh; }
-  /* Skip opacity transition — prevents GPU layer that breaks mix-blend-mode in Safari */
-  .hero__photo-wrap { width: 90%; will-change: auto; opacity: 1; transition: none; }
-  /* Remove GPU promotion — prevents mix-blend-mode breaking in Safari */
+  .hero__photo-wrap { left: 5%; transform: none; width: 90%; will-change: auto; opacity: 1; transition: none; }
   .hero__character { height: 65%; will-change: auto; opacity: 0.92; transition: none; }
   .hero__word { font-size: clamp(1.9rem, 11.5vw, 2.8rem); bottom: 28%; }
   .hero__word--port { right: auto; left: 3vw; }

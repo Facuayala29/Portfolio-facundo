@@ -168,6 +168,7 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+  will-change: transform;
 }
 
 .cards {

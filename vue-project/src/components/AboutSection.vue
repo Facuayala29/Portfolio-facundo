@@ -209,6 +209,7 @@ onUnmounted(() => {
   flex-direction: column;
   justify-content: center;
   background: transparent;
+  will-change: transform;
 }
 
 .about__inner { padding: 0 2.5rem; }
@@ -344,6 +345,7 @@ onUnmounted(() => {
 }
 
 @media (max-width: 768px) {
+  .about { margin-top: 0; }
   .about__body { flex-direction: column-reverse; gap: 3rem; }
   .about__video-col { flex: 0 0 auto; width: 100%; }
   .about__text-col { flex: 0 0 auto; width: 100%; }
