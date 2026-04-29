@@ -46,7 +46,7 @@ export function useGlobalReveal() {
       const type = el.dataset.reveal ?? 'up'
       el.style.opacity = '0'
       el.style.transform = getTransform(type, above)
-      el.style.transition = `opacity 0.85s ${EASE} ${delay}s, transform 0.85s ${EASE} ${delay}s`
+      el.style.transition = `opacity 0.85s var(--ease-out) ${delay}s, transform 0.85s var(--ease-out) ${delay}s`
     })
 
     window.addEventListener('scroll', onScroll, { passive: true })

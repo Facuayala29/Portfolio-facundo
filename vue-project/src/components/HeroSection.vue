@@ -133,7 +133,7 @@ function mainLoop() {
     characterEl.value.style.opacity = Math.max(0, 1 - sp * 3)
   }
 
-  if (photoWrapEl.value) {
+  if (photoWrapEl.value && window.innerWidth > 600) {
     photoWrapEl.value.style.transform =
       `translate3d(calc(-50% + ${mx * 8}px), ${sy * 0.10}px, 0)`
     photoWrapEl.value.style.opacity = Math.max(0, 1 - sp * 1.6)
@@ -413,11 +413,11 @@ onUnmounted(() => {
 }
 @media (max-width: 600px) {
   .hero { min-height: 100svh; }
-  .hero__photo-wrap { width: 90%; }
+  .hero__photo-wrap { width: 90%; will-change: auto; }
   .hero__character { height: 65%; }
   .hero__word { font-size: clamp(1.9rem, 11.5vw, 2.8rem); bottom: 28%; }
   .hero__word--port { right: auto; left: 3vw; }
-  .hero__word--folio { left: auto; right: 3vw; }
+  .hero__word--folio { left: auto; right: 7vw; }
   .hero__gsv--1 { width: 85vw; left: -18%; bottom: -5%; }
   .hero__gsv--2 { width: 72vw; right: -20%; top: -3%; }
   .hero__corner { font-size: 0.5rem; letter-spacing: 0.1em; }

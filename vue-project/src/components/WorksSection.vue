@@ -73,7 +73,7 @@ const CARD_STEP = 360 / N
 let currentAngle = 0
 let targetAngle = 0
 let animId = null
-let vh = 0, sectionH = 0
+let vh = 0, sectionH = 0, sectionTop = 0
 
 function lerp(a, b, t) { return a + (b - a) * t }
 
@@ -97,13 +97,15 @@ function tick() {
 
 function cacheLayout() {
   vh = window.innerHeight
-  if (sectionEl.value) sectionH = sectionEl.value.offsetHeight
+  if (sectionEl.value) {
+    sectionH = sectionEl.value.offsetHeight
+    sectionTop = sectionEl.value.offsetTop
+  }
 }
 
 function onScroll() {
-  if (!sectionEl.value || sectionH - vh <= 0) return
-  const rect = sectionEl.value.getBoundingClientRect()
-  const progress = Math.max(0, Math.min(1, -rect.top / (sectionH - vh)))
+  if (sectionH - vh <= 0) return
+  const progress = Math.max(0, Math.min(1, (window.scrollY - sectionTop) / (sectionH - vh)))
   targetAngle = progress * (N - 1) * CARD_STEP
 }
 

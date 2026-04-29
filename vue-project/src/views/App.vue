@@ -1,5 +1,5 @@
 <template>
-  <div class="app" :class="{ 'app--loaded': appLoaded }">
+  <div class="app">
     <PageLoader @done="onLoaderDone" />
     <AppCursor />
     <AppNav />
@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { onMounted } from 'vue'
 import { useGlobalReveal } from '../composables/useReveal.js'
 import PageLoader from '../components/PageLoader.vue'
 import AppCursor from '../components/AppCursor.vue'
@@ -27,7 +27,6 @@ import WorksSection from '../components/WorksSection.vue'
 import SkillsSection from '../components/SkillsSection.vue'
 import ContactSection from '../components/ContactSection.vue'
 
-const appLoaded = ref(false)
 useGlobalReveal()
 
 onMounted(() => {
@@ -35,17 +34,7 @@ onMounted(() => {
 })
 
 function onLoaderDone() {
-  appLoaded.value = true
   document.body.style.overflow = ''
 }
 </script>
 
-<style scoped>
-.app {
-  opacity: 0;
-  transition: opacity 0.6s ease;
-}
-.app--loaded {
-  opacity: 1;
-}
-</style>

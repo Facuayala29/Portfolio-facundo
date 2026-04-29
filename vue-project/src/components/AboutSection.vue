@@ -74,6 +74,7 @@ let natOffY = 0
 let wordEls = []
 let vh = 0
 let scrollable = 0
+let sectionTop = 0
 
 function measure() {
   if (!pinEl.value || !videoColEl.value) return
@@ -100,15 +101,17 @@ function measure() {
 
 function cacheLayout() {
   vh = window.innerHeight
-  if (aboutEl.value) scrollable = aboutEl.value.offsetHeight - vh
+  if (aboutEl.value) {
+    scrollable = aboutEl.value.offsetHeight - vh
+    sectionTop = aboutEl.value.offsetTop
+  }
   measured = false
 }
 
 function tick() {
   if (!aboutEl.value || !pinEl.value || !videoColEl.value) return
 
-  const rect = aboutEl.value.getBoundingClientRect()
-  const p = Math.max(0, Math.min(1, -rect.top / scrollable))
+  const p = Math.max(0, Math.min(1, (window.scrollY - sectionTop) / scrollable))
 
   if (!measured) measure()
 

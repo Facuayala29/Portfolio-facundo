@@ -76,7 +76,7 @@ function phase(p, start, end) {
 
 let ticking = false
 let cards = []
-let vh = 0, sectionH = 0
+let vh = 0, sectionH = 0, sectionTop = 0
 let vpCX = 0, vpCY = 0
 let cardData = []
 
@@ -84,7 +84,10 @@ function cacheLayout() {
   vh = window.innerHeight
   vpCX = window.innerWidth / 2
   vpCY = vh / 2
-  if (sectionEl.value) sectionH = sectionEl.value.offsetHeight
+  if (sectionEl.value) {
+    sectionH = sectionEl.value.offsetHeight
+    sectionTop = sectionEl.value.offsetTop
+  }
   cardData = cards.map(card => ({
     el: card,
     cx: card.offsetLeft + card.offsetWidth / 2,
@@ -96,8 +99,7 @@ function cacheLayout() {
 function tick() {
   if (!sectionEl.value || sectionH - vh <= 0) return
 
-  const rect = sectionEl.value.getBoundingClientRect()
-  const p = Math.max(0, Math.min(1, -rect.top / (sectionH - vh)))
+  const p = Math.max(0, Math.min(1, (window.scrollY - sectionTop) / (sectionH - vh)))
 
   cardData.forEach(({ el, cx, cy, z }) => {
     const scale = 1 + p * z * 2
