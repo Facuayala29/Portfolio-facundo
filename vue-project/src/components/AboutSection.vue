@@ -2,44 +2,44 @@
   <section class="about" id="about" ref="aboutEl">
     <img class="about__graffiti-svg about__graffiti-svg--r" src="/graffiti/g02.svg" alt="" aria-hidden="true" draggable="false" loading="lazy" decoding="async" data-reveal="right" data-delay="0.05" />
 
-    <div class="about__scroll">
-      <div class="about__pin" ref="pinEl">
-        <div class="about__inner">
+    <div class="about__scroll"></div>
 
-          <div class="about__header" ref="headerEl">
-            <span class="tag">{{ t('about.tag') }}</span>
-            <span class="about__header-line"></span>
-          </div>
+    <div class="about__pin" ref="pinEl">
+      <div class="about__inner">
 
-          <div class="about__body">
-            <div class="about__video-col" ref="videoColEl">
-              <div class="about__video-wrap">
-                <iframe
-                  v-if="videoActive"
-                  src="https://www.youtube.com/embed/P2YGRDogx0Q?controls=1&rel=0&modestbranding=1&autoplay=1"
-                  title="About video"
-                  frameborder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowfullscreen
-                ></iframe>
-                <button v-else class="video-facade" @click="videoActive = true" aria-label="Play video">
-                  <img src="https://img.youtube.com/vi/P2YGRDogx0Q/hqdefault.jpg" alt="" loading="lazy" decoding="async" />
-                  <span class="video-facade__play" aria-hidden="true"></span>
-                </button>
-              </div>
-              <div class="about__video-glow"></div>
-            </div>
-
-            <div class="about__text-col" ref="textColEl">
-              <p class="about__bio-text">
-                <template v-for="(word, wi) in bioWords" :key="wi">
-                  <span class="word-span">{{ word }}</span>{{ ' ' }}
-                </template>
-              </p>
-            </div>
-          </div>
-
+        <div class="about__header" ref="headerEl">
+          <span class="tag">{{ t('about.tag') }}</span>
+          <span class="about__header-line"></span>
         </div>
+
+        <div class="about__body">
+          <div class="about__video-col" ref="videoColEl">
+            <div class="about__video-wrap">
+              <iframe
+                v-if="videoActive"
+                src="https://www.youtube.com/embed/P2YGRDogx0Q?controls=1&rel=0&modestbranding=1&autoplay=1"
+                title="About video"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+              ></iframe>
+              <button v-else class="video-facade" @click="videoActive = true" aria-label="Play video">
+                <img src="https://img.youtube.com/vi/P2YGRDogx0Q/hqdefault.jpg" alt="" loading="lazy" decoding="async" />
+                <span class="video-facade__play" aria-hidden="true"></span>
+              </button>
+            </div>
+            <div class="about__video-glow"></div>
+          </div>
+
+          <div class="about__text-col" ref="textColEl">
+            <p class="about__bio-text">
+              <template v-for="(word, wi) in bioWords" :key="wi">
+                <span class="word-span">{{ word }}</span>{{ ' ' }}
+              </template>
+            </p>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -99,6 +99,21 @@ function measure() {
   measured = true
 }
 
+function syncPin(sy) {
+  const pin = pinEl.value
+  if (!pin || scrollable <= 0) return
+  if (sy <= sectionTop) {
+    pin.style.position = 'absolute'
+    pin.style.top = '0'
+  } else if (sy >= sectionTop + scrollable) {
+    pin.style.position = 'absolute'
+    pin.style.top = `${scrollable}px`
+  } else {
+    pin.style.position = 'fixed'
+    pin.style.top = '0'
+  }
+}
+
 function cacheLayout() {
   vh = pinEl.value?.offsetHeight || window.innerHeight
   if (aboutEl.value) {
@@ -106,12 +121,16 @@ function cacheLayout() {
     sectionTop = aboutEl.value.offsetTop
   }
   measured = false
+  syncPin(window.scrollY)
 }
 
 function tick() {
   if (!aboutEl.value || !pinEl.value || !videoColEl.value) return
 
-  const p = Math.max(0, Math.min(1, (window.scrollY - sectionTop) / scrollable))
+  const sy = window.scrollY
+  syncPin(sy)
+
+  const p = Math.max(0, Math.min(1, (sy - sectionTop) / scrollable))
 
   if (!measured) measure()
 
@@ -192,16 +211,16 @@ onUnmounted(() => {
   z-index: 2;
 }
 .about__scroll {
-  position: relative;
-  z-index: 3;
   height: 280vh;
   height: 280svh;
   overflow-x: clip;
 }
 
 .about__pin {
-  position: sticky;
+  position: absolute;
   top: 0;
+  left: 0;
+  right: 0;
   height: 100vh;
   height: 100svh;
   overflow: hidden;
@@ -209,7 +228,7 @@ onUnmounted(() => {
   flex-direction: column;
   justify-content: center;
   background: transparent;
-  will-change: transform;
+  z-index: 2;
 }
 
 .about__inner { padding: 0 2.5rem; }

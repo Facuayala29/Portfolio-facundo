@@ -1,59 +1,59 @@
 <template>
   <section class="manifesto" ref="sectionEl">
-    <div class="manifesto__scroll">
-      <div class="manifesto__pin" ref="pinEl">
+    <div class="manifesto__scroll"></div>
 
-        <div class="cards" aria-hidden="true">
-          <div class="card card--tl" data-z="0.9">
-            <div class="card__shell">
-              <video class="card__media" autoplay muted loop playsinline preload="none">
-                <source src="/urbanecho/video2.webm" type="video/webm" />
-                <source src="/urbanecho/video2.mp4" type="video/mp4" />
-              </video>
-            </div>
-          </div>
-          <div class="card card--tr" data-z="1.15">
-            <div class="card__shell">
-              <img src="/food/poster.webp" class="card__media" alt="" loading="lazy" decoding="async" />
-            </div>
-          </div>
-          <div class="card card--ml" data-z="1.25">
-            <div class="card__shell">
-              <img src="/core/cover.webp" class="card__media" alt="" loading="lazy" decoding="async" />
-            </div>
-          </div>
-          <div class="card card--mr" data-z="0.85">
-            <div class="card__shell">
-              <img src="/urbanecho/mockup.webp" class="card__media" alt="" loading="lazy" decoding="async" />
-            </div>
-          </div>
-          <div class="card card--bl" data-z="1.4">
-            <div class="card__shell">
-              <img src="/greenloop/mockup.webp" class="card__media" alt="" loading="lazy" decoding="async" />
-            </div>
-          </div>
-          <div class="card card--br" data-z="0.75">
-            <div class="card__shell">
-              <video class="card__media" autoplay muted loop playsinline preload="none">
-                <source src="/urbanecho/video.webm" type="video/webm" />
-                <source src="/urbanecho/video.mp4" type="video/mp4" />
-              </video>
-            </div>
+    <div class="manifesto__pin" ref="pinEl">
+
+      <div class="cards" aria-hidden="true">
+        <div class="card card--tl" data-z="0.9">
+          <div class="card__shell">
+            <video class="card__media" autoplay muted loop playsinline preload="none">
+              <source src="/urbanecho/video2.webm" type="video/webm" />
+              <source src="/urbanecho/video2.mp4" type="video/mp4" />
+            </video>
           </div>
         </div>
-
-        <div class="text-center">
-          <h2 class="text-block">
-            <span class="tline" ref="l1">{{ t('manifesto.line1') }}</span>
-            <span class="tline" ref="l2">{{ t('manifesto.line2') }}</span>
-            <span class="tline tline--row">
-              <span ref="l3a">{{ t('manifesto.line3a') }}</span>
-              <span class="accent" ref="l3b">{{ t('manifesto.line3b') }}</span>
-            </span>
-          </h2>
+        <div class="card card--tr" data-z="1.15">
+          <div class="card__shell">
+            <img src="/food/poster.webp" class="card__media" alt="" loading="lazy" decoding="async" />
+          </div>
         </div>
-
+        <div class="card card--ml" data-z="1.25">
+          <div class="card__shell">
+            <img src="/core/cover.webp" class="card__media" alt="" loading="lazy" decoding="async" />
+          </div>
+        </div>
+        <div class="card card--mr" data-z="0.85">
+          <div class="card__shell">
+            <img src="/urbanecho/mockup.webp" class="card__media" alt="" loading="lazy" decoding="async" />
+          </div>
+        </div>
+        <div class="card card--bl" data-z="1.4">
+          <div class="card__shell">
+            <img src="/greenloop/mockup.webp" class="card__media" alt="" loading="lazy" decoding="async" />
+          </div>
+        </div>
+        <div class="card card--br" data-z="0.75">
+          <div class="card__shell">
+            <video class="card__media" autoplay muted loop playsinline preload="none">
+              <source src="/urbanecho/video.webm" type="video/webm" />
+              <source src="/urbanecho/video.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
       </div>
+
+      <div class="text-center">
+        <h2 class="text-block">
+          <span class="tline" ref="l1">{{ t('manifesto.line1') }}</span>
+          <span class="tline" ref="l2">{{ t('manifesto.line2') }}</span>
+          <span class="tline tline--row">
+            <span ref="l3a">{{ t('manifesto.line3a') }}</span>
+            <span class="accent" ref="l3b">{{ t('manifesto.line3b') }}</span>
+          </span>
+        </h2>
+      </div>
+
     </div>
   </section>
 </template>
@@ -81,8 +81,28 @@ let vh = 0, sectionH = 0, sectionTop = 0
 let vpCX = 0, vpCY = 0
 let cardData = []
 
+
+function syncPin(sy) {
+  const pin = pinEl.value
+  if (!pin || sectionH <= vh) return
+  if (sy <= sectionTop) {
+    pin.style.position = 'absolute'
+    pin.style.top = '0'
+  } else if (sy >= sectionTop + sectionH - vh) {
+    pin.style.position = 'absolute'
+    pin.style.top = `${sectionH - vh}px`
+  } else {
+    pin.style.position = 'fixed'
+    pin.style.top = '0'
+  }
+}
+
 function cacheLayout() {
-  vh = pinEl.value?.offsetHeight || window.innerHeight
+  const pin = pinEl.value
+  const wasFixed = pin?.style.position === 'fixed'
+  if (wasFixed && pin) pin.style.position = 'absolute'
+
+  vh = pin?.offsetHeight || window.innerHeight
   vpCX = window.innerWidth / 2
   vpCY = vh / 2
   if (sectionEl.value) {
@@ -95,12 +115,17 @@ function cacheLayout() {
     cy: card.offsetTop + card.offsetHeight / 2,
     z: parseFloat(card.dataset.z) || 1,
   }))
+
+  syncPin(window.scrollY)
 }
 
 function tick() {
   if (!sectionEl.value || sectionH - vh <= 0) return
 
-  const p = Math.max(0, Math.min(1, (window.scrollY - sectionTop) / (sectionH - vh)))
+  const sy = window.scrollY
+  syncPin(sy)
+
+  const p = Math.max(0, Math.min(1, (sy - sectionTop) / (sectionH - vh)))
 
   cardData.forEach(({ el, cx, cy, z }) => {
     const scale = 1 + p * z * 2
@@ -156,19 +181,20 @@ onUnmounted(() => {
 .manifesto__scroll {
   height: 500vh;
   height: 500svh;
-  position: relative;
   overflow-x: clip;
 }
 .manifesto__pin {
-  position: sticky;
+  position: absolute;
   top: 0;
+  left: 0;
+  right: 0;
   height: 100vh;
   height: 100svh;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  will-change: transform;
+  z-index: 1;
 }
 
 .cards {
@@ -179,7 +205,7 @@ onUnmounted(() => {
 
 .card {
   position: absolute;
-  will-change: transform, opacity;
+ 
 }
 
 .card--tl { left: 7%; top: 4%; width: 24vw; aspect-ratio: 16/9; }
