@@ -80,11 +80,12 @@ onMounted(() => {
 
 .loader__logo {
   font-family: var(--font-display);
-  font-size: clamp(3.5rem, 12vw, 8rem);
+  font-size: clamp(1.8rem, 12vw, 8rem);
   letter-spacing: -0.02em;
   line-height: 1;
   display: flex;
   align-items: baseline;
+  white-space: nowrap;
   animation: logoBreath 2s ease-in-out infinite;
 }
 @keyframes logoBreath {

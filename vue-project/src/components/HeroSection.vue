@@ -368,7 +368,7 @@ onUnmounted(() => {
 .hero__corner--tl { top: 5rem; left: 2.5rem; transition-delay: 1.0s; }
 .hero__corner--tr { top: 5rem; right: 2.5rem; text-align: right; transition-delay: 1.1s; }
 .hero__corner--bl { bottom: 2.8rem; left: 2.5rem; transition-delay: 1.2s; }
-.hero__corner--br { bottom: 2.8rem; right: 2.5rem; text-align: right; transition-delay: 1.3s; white-space: nowrap; }
+.hero__corner--br { bottom: 2.8rem; right: 2.5rem; text-align: right; transition-delay: 1.3s; }
 .hero__tagline { font-size: 0.55rem; line-height: 1.8; }
 
 .hero__scroll-hint {
