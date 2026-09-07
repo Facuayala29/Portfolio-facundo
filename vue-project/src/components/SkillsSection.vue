@@ -1,9 +1,6 @@
 <template>
   <section class="skills" id="skills" ref="skillsEl">
-
-    <img class="skills__gsv skills__gsv--1" src="/graffiti/g02.svg" alt="" aria-hidden="true" draggable="false" loading="lazy" decoding="async" data-reveal="right" data-delay="0.1" />
-
-    <div class="skills__inner">
+<div class="skills__inner">
       <div class="skills__header">
         <h2 class="skills__title" data-reveal="up" data-delay="0.05">
           {{ titleWords[0] }}&nbsp;<span class="bracket">{</span>{{ titleWords[1] }}<span class="bracket">}</span>
@@ -21,7 +18,7 @@
         >
           <h3 class="skill-category__name">{{ localizedCategories[ci] || category.name }}</h3>
           <div class="pills">
-            <span v-for="(skill, si) in category.skills" :key="si" class="pill">{{ skill }}</span>
+            <span v-for="(skill, si) in (localizedCategorySkills[ci] || category.skills)" :key="si" class="pill">{{ skill }}</span>
           </div>
         </div>
       </div>
@@ -51,22 +48,27 @@ const localizedCategories = computed(() => {
   return Array.isArray(cats) ? cats : []
 })
 
+const localizedCategorySkills = computed(() => {
+  const skills = t('skills.categorySkills')
+  return Array.isArray(skills) ? skills : skillCategories.map(c => c.skills)
+})
+
 const skillCategories = [
   {
     name: 'Design',
-    skills: ['UI/UX Design', 'Visual Design', 'Motion Design', 'Brand Identity', 'Design Systems'],
+    skills: ['UI/UX Design', 'Visual Design', 'Brand Identity', 'Design Systems', 'UX Research', 'Information Design', 'Print Design', 'Illustration', 'Typography', 'Motion Design'],
   },
   {
     name: 'Soft Skills',
-    skills: ['Problem Solving', 'Creative Thinking', 'Adaptability', 'Communication', 'Management'],
+    skills: ['Problem Solving', 'Creative Thinking', 'Adaptability', 'Communication', 'Client Relations', 'Scrum / Agile', 'Management'],
   },
   {
     name: 'Tools',
-    skills: ['Figma', 'After Effects', 'Premiere Pro', 'InDesign', 'Illustrator', 'Photoshop', 'JavaScript', 'HTML', 'CSS', 'WordPress', 'Vue'],
+    skills: ['Figma', 'After Effects', 'Premiere Pro', 'InDesign', 'Illustrator', 'Photoshop', 'JavaScript', 'HTML', 'CSS', 'WordPress', 'Vue', 'Firebase', 'Git', 'SEO'],
   },
   {
     name: 'AI',
-    skills: ['Prompt Writing', 'Strategic AI Implementation', 'Generative AI', 'AI Tools'],
+    skills: ['Prompt Writing', 'Strategic AI Implementation', 'Generative AI', 'AI-Assisted Design'],
   },
 ]
 
@@ -125,23 +127,11 @@ onUnmounted(() => {
 .skills {
   position: relative;
   padding: 8rem 2.5rem;
-  background: radial-gradient(ellipse at 50% 0%, rgba(135,22,51,0.10) 0%, transparent 60%),
+  background: radial-gradient(ellipse at 50% 0%, color-mix(in srgb, var(--red) 10%, transparent) 0%, transparent 60%),
               var(--black);
   overflow: visible;
 }
 .skills__inner { max-width: 1100px; margin: 0 auto; }
-
-.skills__gsv {
-  position: absolute;
-  pointer-events: none;
-  user-select: none;
-}
-.skills__gsv--1 {
-  width: clamp(340px, 50vw, 640px);
-  top: -5%;
-  right: -20%;
-  transform: rotate(-7deg);
-}
 
 .skills__title {
   font-family: var(--font-graffiti);
@@ -149,6 +139,8 @@ onUnmounted(() => {
   letter-spacing: 0.02em;
   line-height: 1;
   margin-bottom: 0.6rem;
+  color: var(--skills-title-color, var(--white));
+
 }
 .bracket { color: var(--red); }
 
@@ -181,8 +173,9 @@ onUnmounted(() => {
   text-transform: uppercase;
   color: var(--red);
   margin-bottom: 1.2rem;
-  border-bottom: 1px solid rgba(135,22,51,0.2);
+  border-bottom: 1px solid color-mix(in srgb, var(--red) 30%, transparent);
   padding-bottom: 0.7rem;
+
 }
 
 .pills { display: flex; flex-wrap: wrap; gap: 0.55rem; }
@@ -191,10 +184,10 @@ onUnmounted(() => {
   display: inline-block;
   padding: 0.48em 1.1em;
   border-radius: 50px;
-  border: 1px solid rgba(237,232,213,0.10);
+  border: 1px solid color-mix(in srgb, var(--white) 28%, transparent);
   font-size: 0.75rem;
   letter-spacing: 0.06em;
-  color: rgba(237,232,213,0.55);
+  color: var(--white);
   background: rgba(255,255,255,0.02);
   cursor: none;
   --rx: 0px;
@@ -216,16 +209,16 @@ onUnmounted(() => {
 }
 .pill.revealed:hover {
   color: var(--white);
-  border-color: rgba(135,22,51,0.55);
-  background: rgba(135,22,51,0.08);
+  border-color: color-mix(in srgb, var(--red) 70%, transparent);
+  background: color-mix(in srgb, var(--red) 8%, transparent);
 }
 
 @media (max-width: 768px) {
   .skills { padding: 6rem 1.5rem; }
   .skills__grid { grid-template-columns: 1fr; gap: 2rem; }
-  .skills__gsv { opacity: 0.25; }
 }
 @media (max-width: 600px) {
   .skills__grid { grid-template-columns: 1fr; }
 }
+:root[data-theme="day"] .skills { --skills-title-color: #1a2a4a; }
 </style>

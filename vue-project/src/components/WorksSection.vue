@@ -2,8 +2,6 @@
   <section class="works" id="works" ref="sectionEl">
     <div class="works__scroll-track">
       <div class="works__pin">
-        <img class="works__gsv works__gsv--2" src="/graffiti/g01.svg" alt="" aria-hidden="true" draggable="false" loading="lazy" decoding="async" data-reveal="left" data-delay="0.1" />
-
         <div class="works__intro">
           <p class="works__label" data-reveal="up" data-delay="0.05">{{ t('works.tag') }}</p>
           <h2 class="works__title" data-reveal="up" data-delay="0.2" v-html="t('works.title').replace('\n', '<br/>')"></h2>
@@ -20,7 +18,7 @@
               @click="openModal(project)"
             >
               <div class="works-card__visual" :style="{ background: project.bg }">
-                <img v-if="project.cardImage" :src="project.cardImage" :class="['wc-img', { 'wc-img--pixel': project.cardImage.includes('card.png'), 'wc-img--contain': project.cardFit === 'contain' }]" alt="" draggable="false" loading="lazy" decoding="async" />
+                <img v-if="project.cardImage" :src="project.cardImage" :class="['wc-img', { 'wc-img--pixel': project.cardImage === '/mario/card.png', 'wc-img--contain': project.cardFit === 'contain', 'wc-img--top': project.cardImage.includes('businessdedk') }]" alt="" draggable="false" loading="lazy" decoding="async" />
                 <template v-else>
                   <div class="wc-circle" :style="{ background: project.accent }"></div>
                   <div class="wc-bar"></div>
@@ -55,10 +53,12 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useTheme } from '../composables/useTheme.js'
 import { useI18n } from '../composables/useI18n.js'
 import ProjectModal from './ProjectModal.vue'
 
 const { t } = useI18n()
+const { isDay } = useTheme()
 
 const sectionEl = ref(null)
 const stageEl = ref(null)
@@ -109,24 +109,37 @@ function onScroll() {
   targetAngle = progress * (N - 1) * CARD_STEP
 }
 
-const base = {
-  bg: 'linear-gradient(135deg,#1a0810,#120509)',
-  accent: 'rgba(135,22,51,0.7)',
-  glow: 'rgba(135,22,51,0.55)',
-  overlayBg: 'rgba(18,5,9,0.96)',
+// night base: deep dark backgrounds
+const nightBase = {
+  bg: 'linear-gradient(135deg,#1a2a4a,#0e1f3a)',
+  accent: 'rgba(80,120,200,0.55)',
+  glow: 'rgba(100,145,220,0.50)',
+  overlayBg: 'rgba(6,10,22,0.96)',
+}
+// day base: warm golden backgrounds  
+const dayBase = {
+  bg: 'linear-gradient(135deg,#f0e8d0,#e8dcc4)',
+  accent: 'rgba(180,100,0,0.55)',
+  glow: 'rgba(190,120,10,0.55)',
+  overlayBg: 'rgba(245,230,185,0.96)',
 }
 
-const projectStyles = [
-  { ...base, cardImage: '/urbanecho/mockup.webp', images: ['/urbanecho/sketch1.jpeg', '/urbanecho/sketch2.jpeg', '/urbanecho/mockup.webp', '/urbanecho/video.mp4', '/urbanecho/video2.mp4'] },
-  { ...base, cardImage: '/mario/poster.webp', images: ['/mario/sketch.jpeg', '/mario/poster.webp', '/mario/print.jpeg'] },
-  { ...base, cardImage: '/core/cover.webp', images: ['/core/logo.webp', '/core/magazine.pdf', '/core/magazine-cover.webp', '/core/mockup.webp'] },
-  { ...base, cardImage: '/food/poster.webp', images: ['/food/sketch.jpeg', '/food/poster.webp', '/food/mockup.webp'] },
-  { ...base, cardImage: '/greenloop/mockup.webp', images: ['/greenloop/sketch.jpeg', '/greenloop/logo-green.webp', '/greenloop/mockup.webp'] },
+const cardImages = [
+  { cardImage: '/businessdedk/banner.png', images: ['/businessdedk/banner.png', '/businessdedk/badge.png', '/businessdedk/businesscard.png', '/businessdedk/newsletter.png', '/businessdedk/brochure.png', '/businessdedk/thermos.png', '/businessdedk/pen.png', '/businessdedk/social-calendar.pdf'] },
+  { cardImage: '/mario/card.webp', images: ['/mario/sketch.jpeg', '/mario/poster.webp', '/mario/print.jpeg', '/mario/card.webp'] },
+  { cardImage: '/core/mockup.webp', images: ['/core/logo.webp', '/core/magazine.pdf', '/core/magazine-cover.webp', '/core/mockup.webp'] },
+  { cardImage: '/urbanecho/mockup.webp', images: ['/urbanecho/sketch1.jpeg', '/urbanecho/sketch2.jpeg', '/urbanecho/mockup.webp', '/urbanecho/video.mp4', '/urbanecho/video2.mp4'] },
+  { cardImage: '/greenloop/mockup.webp', images: ['/greenloop/sketch.jpeg', '/greenloop/logo-green.webp', '/greenloop/mockup.webp'] },
 ]
+
+const projectStyles = computed(() => {
+  const base = isDay.value ? dayBase : nightBase
+  return cardImages.map(img => ({ ...base, ...img }))
+})
 
 const allProjects = computed(() => {
   const ps = t('works.projects')
-  return projectStyles.map((style, idx) => ({
+  return projectStyles.value.map((style, idx) => ({
     ...style,
     origIdx: idx,
     i18n: Array.isArray(ps) ? ps[idx] : { title: '', type: '', desc: '', tags: [] },
@@ -151,6 +164,26 @@ onUnmounted(() => {
 .works {
   position: relative;
   background: var(--black);
+  /* night */
+  --card-title:    #1a2a4a;
+  --card-text:     rgba(26,42,74,0.75);
+  --works-card-bg: #f0e8d0;
+  --works-title-color: #c47a15;
+  --works-label-color:  #f0e8d0;
+  --card-border:   rgba(26,42,74,0.15);
+  --overlay-bg:    rgba(4,8,20,0.96);
+  --overlay-text:  rgba(240,232,208,0.85);
+}
+:root[data-theme="day"] .works {
+  /* day */
+  --card-title:    #f0e8d0;
+  --card-text:     rgba(240,232,208,0.80);
+  --works-card-bg: #1a2a4a;
+  --works-title-color: #1a2a4a;
+  --works-label-color:  var(--red);
+  --card-border:   rgba(240,232,208,0.18);
+  --overlay-bg:    rgba(15,28,58,0.97);
+  --overlay-text:  rgba(240,232,208,0.88);
 }
 .works__scroll-track {
   height: 500vh;
@@ -165,19 +198,7 @@ onUnmounted(() => {
 /* Clip only the carousel, not the graffiti decorations */
 .carousel-wrapper { overflow: hidden; }
 
-.works__gsv {
-  position: absolute;
-  pointer-events: none;
-  user-select: none;
-  z-index: 0;
-}
-.works__gsv--2 {
-  width: clamp(480px, 72vw, 920px);
-  bottom: -10%;
-  left: -34%;
-  transform: rotate(-13deg) scaleY(0.88);
-  opacity: 0.9;
-}
+
 
 .works__intro {
   position: absolute;
@@ -191,15 +212,17 @@ onUnmounted(() => {
   font-size: 0.65rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  opacity: 0.35;
+  opacity: 0.80;
   margin-bottom: 0.9rem;
+  color: var(--works-label-color);
 }
 .works__title {
-  font-family: 'Cyber Brush', var(--font-graffiti);
-  font-size: clamp(1.8rem, 3vw, 3rem);
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 5vw, 5.5rem);
   line-height: 0.95;
   letter-spacing: 0.02em;
   margin-bottom: 0.9rem;
+  color: var(--works-title-color);
 }
 .carousel-wrapper {
   position: absolute;
@@ -229,9 +252,9 @@ onUnmounted(() => {
   left: -130px;
   border-radius: 1.2rem;
   overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.08);
-  background: #0d0d0d;
-  color: var(--white);
+  border: 1px solid var(--card-border);
+  background: var(--works-card-bg);
+  color: var(--card-title);
   cursor: none;
   transform: rotateY(var(--angle)) translateZ(280px);
   transition: border-color 0.4s, box-shadow 0.4s;
@@ -240,6 +263,11 @@ onUnmounted(() => {
 .works-card:hover {
   border-color: var(--glow, rgba(255,255,255,0.2));
   box-shadow: 0 0 60px var(--glow, rgba(255,255,255,0.15));
+}
+:root[data-theme="day"] .works-card:hover {
+  --works-card-bg: #f0e8d0;
+  --card-title:    #1a2a4a;
+  --card-text:     rgba(26,42,74,0.75);
 }
 
 .works-card__visual {
@@ -279,6 +307,9 @@ onUnmounted(() => {
   padding: 0.5rem 0.5rem 1.5rem;
   image-rendering: pixelated;
 }
+.wc-img--top {
+  object-position: center 60%;
+}
 .wc-noise {
   position: absolute; inset: 0;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
@@ -290,14 +321,14 @@ onUnmounted(() => {
   flex-direction: column;
   gap: 0.28rem;
 }
-.works-card__num   { font-size: 0.55rem; letter-spacing: 0.2em; opacity: 0.25; }
-.works-card__title { font-family: var(--font-display); font-size: 0.88rem; line-height: 1.15; letter-spacing: 0.01em; }
-.works-card__type  { font-size: 0.57rem; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.35; }
+.works-card__num   { font-size: 0.55rem; letter-spacing: 0.2em; color: var(--red); opacity: 1; }
+.works-card__title { font-family: var(--font-display); font-size: 0.88rem; line-height: 1.15; letter-spacing: 0.01em; color: var(--card-title); font-weight: 700; }
+.works-card__type  { font-size: 0.57rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--card-title); opacity: 1; }
 
 .works-card__overlay {
   position: absolute;
   inset: 0;
-  background: var(--bg, rgba(6,6,8,0.94));
+  background: var(--overlay-bg);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -316,7 +347,7 @@ onUnmounted(() => {
 }
 .works-card__desc {
   font-size: 0.76rem; line-height: 1.65;
-  font-weight: 300; color: rgba(245,245,240,0.70);
+  font-weight: 300; color: var(--overlay-text);
 }
 .works-card__tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
 .works-tag {
@@ -325,7 +356,7 @@ onUnmounted(() => {
   padding: 0.22rem 0.55rem;
   border: 1px solid var(--glow);
   border-radius: 999px;
-  color: rgba(245,245,240,0.6);
+  color: var(--overlay-text); opacity: 0.72;
 }
 .works-card__go {
   position: absolute; top: 1.1rem; right: 1.2rem;

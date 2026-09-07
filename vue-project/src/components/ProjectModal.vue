@@ -7,11 +7,6 @@
           <span></span><span></span>
         </button>
 
-        <div class="modal-visual" :style="{ background: project.bg }">
-          <div class="modal-visual__glow" :style="{ background: project.accent.replace('0.7', '0.4') }"></div>
-          <div class="modal-visual__noise"></div>
-          <div class="modal-visual__num">0{{ project.origIdx + 1 }}</div>
-        </div>
 
         <div class="modal-body">
           <p class="modal-type">{{ project.i18n.type }}</p>
@@ -118,14 +113,26 @@ function openLightbox(gridIdx) {
   max-width: 680px;
   min-height: 75vh;
   max-height: 96vh;
-  background: #0f0f0f;
-  border: 1px solid rgba(255,255,255,0.08);
+  background: #f0e8d0;
+  border: 1px solid rgba(26,42,74,0.14);
   border-bottom: none;
   border-radius: 1.4rem 1.4rem 0 0;
   overflow: hidden;
   display: flex;
   flex-direction: column;
 }
+:root[data-theme="day"] .modal-panel {
+  background: #1a2a4a;
+  border-color: rgba(240,232,208,0.12);
+}
+:root[data-theme="day"] .modal-title { color: #f0e8d0; }
+:root[data-theme="day"] .modal-section__text { color: rgba(240,232,208,0.75); }
+:root[data-theme="day"] .modal-section { border-top-color: rgba(240,232,208,0.10); }
+:root[data-theme="day"] .modal-tags { border-top-color: rgba(240,232,208,0.10); }
+:root[data-theme="day"] .modal-tag { border-color: rgba(240,232,208,0.18); color: rgba(240,232,208,0.65); }
+:root[data-theme="day"] .modal-close { background: rgba(240,232,208,0.10); border-color: rgba(240,232,208,0.20); }
+:root[data-theme="day"] .modal-close span { background: rgba(240,232,208,0.80); }
+:root[data-theme="day"] .modal-close:hover { background: rgba(240,232,208,0.18); }
 
 .modal-close {
   position: absolute;
@@ -133,8 +140,8 @@ function openLightbox(gridIdx) {
   right: 1.4rem;
   width: 32px;
   height: 32px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(26,42,74,0.08);
+  border: 1px solid rgba(26,42,74,0.18);
   border-radius: 50%;
   cursor: none;
   display: flex;
@@ -143,47 +150,17 @@ function openLightbox(gridIdx) {
   z-index: 10;
   transition: background 0.2s;
 }
-.modal-close:hover { background: rgba(255,255,255,0.12); }
+.modal-close:hover { background: rgba(26,42,74,0.14); }
 .modal-close span {
   position: absolute;
   width: 12px; height: 1.5px;
-  background: rgba(255,255,255,0.7);
+  background: rgba(26,42,74,0.75);
   border-radius: 2px;
 }
 .modal-close span:first-child { transform: rotate(45deg); }
 .modal-close span:last-child { transform: rotate(-45deg); }
 
-.modal-visual {
-  position: relative;
-  height: 180px;
-  flex-shrink: 0;
-  overflow: hidden;
-}
-.modal-visual__glow {
-  position: absolute;
-  inset: -40%;
-  border-radius: 50%;
-  filter: blur(50px);
-  opacity: 0.6;
-}
-.modal-visual__noise {
-  position: absolute;
-  inset: 0;
-  opacity: 0.04;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-.modal-visual__num {
-  position: absolute;
-  bottom: 1rem;
-  right: 1.5rem;
-  font-family: var(--font-display);
-  font-size: 4rem;
-  font-weight: 700;
-  color: rgba(255,255,255,0.05);
-  letter-spacing: -0.05em;
-  line-height: 1;
-  user-select: none;
-}
+
 
 .modal-body {
   padding: 2rem 2rem 2.5rem;
@@ -207,14 +184,14 @@ function openLightbox(gridIdx) {
   letter-spacing: -0.02em;
   line-height: 1.05;
   margin-bottom: 1.8rem;
-  color: var(--white);
+  color: #1a2a4a;
   opacity: 0;
   transform: translateY(18px);
   animation: sectionReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.06s forwards;
 }
 
 .modal-section {
-  border-top: 1px solid rgba(255,255,255,0.06);
+  border-top: 1px solid rgba(26,42,74,0.10);
   padding: 1.2rem 0;
   display: flex;
   flex-direction: column;
@@ -242,7 +219,7 @@ function openLightbox(gridIdx) {
 .modal-section__text {
   font-size: 0.88rem;
   line-height: 1.75;
-  color: rgba(245,245,240,0.55);
+  color: rgba(26,42,74,0.72);
 }
 
 .modal-images-grid {
@@ -326,7 +303,7 @@ function openLightbox(gridIdx) {
 .modal-pdf-name {
   font-size: 0.62rem;
   letter-spacing: 0.1em;
-  color: rgba(245,245,240,0.45);
+  color: rgba(240,232,208,0.65);
 }
 
 .modal-placeholder {
@@ -342,15 +319,15 @@ function openLightbox(gridIdx) {
   gap: 0.45rem;
   margin-top: 1.4rem;
   padding-top: 1.2rem;
-  border-top: 1px solid rgba(255,255,255,0.06);
+  border-top: 1px solid rgba(26,42,74,0.10);
 }
 .modal-tag {
   padding: 0.35em 0.9em;
   border-radius: 50px;
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(26,42,74,0.20);
   font-size: 0.68rem;
   letter-spacing: 0.06em;
-  color: rgba(245,245,240,0.45);
+  color: rgba(26,42,74,0.60);
 }
 
 .lightbox {

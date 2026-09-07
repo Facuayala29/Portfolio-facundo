@@ -1,240 +1,410 @@
 <template>
-  <section class="contact" id="contact">
-    <img class="contact__graffiti-svg contact__graffiti-svg--1" src="/graffiti/g01.svg" alt="" aria-hidden="true" draggable="false" loading="lazy" decoding="async" data-reveal="right" data-delay="0.1" />
-    <img class="contact__graffiti-svg contact__graffiti-svg--2" src="/graffiti/g03.svg" alt="" aria-hidden="true" draggable="false" loading="lazy" decoding="async" data-reveal="left" data-delay="0.15" />
+  <section class="contact" id="contact" ref="sectionEl">
 
-    <div class="contact__bg" aria-hidden="true">
-      <div class="bg-glow bg-glow--1"></div>
-      <div class="bg-glow bg-glow--2"></div>
-      <div class="bg-noise"></div>
+    <!-- sky layer (matches hero) -->
+    <div class="contact__sky" aria-hidden="true">
+      <div class="csky-base"></div>
+      <div class="csky-haze"></div>
+      <div class="csky-glow" :class="isDay ? 'csky-glow--day' : 'csky-glow--night'"></div>
     </div>
 
+    <!-- noise / grain canvas -->
+    <canvas class="contact__noise" ref="noiseEl" aria-hidden="true"></canvas>
+
+    <!-- vignette -->
+    <div class="contact__vignette" aria-hidden="true"></div>
+
+    <!-- floating stars (night only) -->
+    <template v-if="!isDay">
+      <svg v-for="s in STARS" :key="s.id" class="cstar"
+        :style="{ left: s.x + '%', top: s.y + '%', '--delay': s.delay + 's', '--sz': s.sz + 'px' }"
+        viewBox="-1 -1 2 2" aria-hidden="true">
+        <path d="M0,-1 L.2,-.2 L1,0 L.2,.2 L0,1 L-.2,.2 L-1,0 L-.2,-.2Z" fill="currentColor"/>
+      </svg>
+    </template>
+
+    <!-- text content -->
     <div class="contact__content">
-      <div class="contact__label" data-reveal="up" data-delay="0">
-        <span class="bracket red">[</span>
-        Get in touch
-        <span class="bracket red">]</span>
+
+      <div class="h-row h-row--left" data-reveal="up" data-delay="0">
+        <span class="h-small">{{ t('contact.small') }}</span>
       </div>
 
-      <h2 class="contact__headline" data-reveal="up" data-delay="0.1">
-        <span class="h-line">Let's create</span>
-        <span class="h-line">something <em>stunning</em></span>
-      </h2>
+      <div class="h-row h-row--center" data-reveal="up" data-delay="0.1">
+        <span class="h-huge">{{ t('contact.huge') }}</span>
+      </div>
 
-      <div class="contact__cta" data-reveal="up" data-delay="0.25">
+      <div class="h-row h-row--right" data-reveal="up" data-delay="0.18">
+        <span class="h-mid"><em>{{ t('contact.mid') }}</em></span>
+      </div>
+
+      <div class="h-row h-row--center h-row--cta" data-reveal="up" data-delay="0.28">
+        <span class="h-call">{{ t('contact.call') }}</span>
+      </div>
+
+      <div class="contact__cta" data-reveal="up" data-delay="0.4">
         <a href="mailto:facuayala29@gmail.com" class="contact__email">
           <span class="email-text">facuayala29@gmail.com</span>
-          <span class="email-line"></span>
           <span class="email-arrow">↗</span>
         </a>
-        <p class="contact__avail" data-reveal="up" data-delay="0.45">Available for freelance &amp; full-time · Based in Aarhus, DK</p>
       </div>
+
     </div>
 
-    <footer class="site-footer" data-reveal="up" data-delay="0.6">
+        <!-- horizon / ground (mirrors hero cloud aesthetic) -->
+    <div class="contact__horizon" aria-hidden="true">
+      <div class="ch-ground"></div>
+      <div class="ch ch--haze"></div>
+      <div class="ch ch--back"></div>
+      <div class="ch ch--mid-l"></div>
+      <div class="ch ch--mid-r"></div>
+      <div class="ch ch--tall-l"></div>
+      <div class="ch ch--front-l"></div>
+      <div class="ch ch--front-r"></div>
+    </div>
+
+    <!-- footer -->
+    <footer class="site-footer">
       <div class="footer-icons">
         <a href="https://www.linkedin.com/in/facundo-munoz-ayala/" target="_blank" rel="noopener" class="footer-icon-link" aria-label="LinkedIn">
-          <svg viewBox="0 0 139.62 139.36" aria-hidden="true">
-            <path fill="#841631" d="M35.07,0l72.85.06c10.39-.08,19.98,2.91,26.17,11.61,5.17,7.28,5.19,14.29,5.37,22.89.51,24.34-.37,48.78,0,73.16-.27,9.7-1.92,17.95-9.52,24.57-6.88,6-14.3,6.85-23.14,7.07H33.28c-10.48-.25-19.2-1.5-26.32-9.89-5.73-6.74-6.43-13.58-6.69-22.13-.75-24.74.37-49.6-.1-74.36.24-9.64,1.26-17.86,8.45-24.89C16.3.59,24.88.19,35.07,0Z"/>
-            <path fill="#ece5d3" d="M111.66,111.65h-16.9l.1-30.81c-.17-14.58-21.62-13.44-21.9.55v30.25s-16.81,0-16.81,0v-55.79h15.89v7.94c3.32-4.47,8.56-7.61,14.04-8.64,6.89-1.29,13.66.44,18.94,4.99,3.43,2.95,6.36,9.64,6.65,14.13v37.36Z"/>
-            <rect fill="#ece5d3" x="29.27" y="55.86" width="17.27" height="55.79"/>
-            <circle fill="#ece5d3" cx="37.88" cy="37.62" r="9.91"/>
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
           </svg>
         </a>
         <a href="mailto:facuayala29@gmail.com" class="footer-icon-link" aria-label="Email">
-          <svg viewBox="0 0 147.92 147.53" aria-hidden="true">
-            <ellipse fill="#ece5d3" cx="75.03" cy="73.09" rx="67.57" ry="70.6"/>
-            <path fill="#851634" d="M73.96,0C33.1,0,0,33.1,0,73.96c3.88,98.11,144.05,98.08,147.92,0,0-40.86-33.1-73.96-73.96-73.96ZM31.45,38.26h85.03c.97,0,1.89.2,2.75.59l-45.27,43.97L28.69,38.84c.87-.38,1.79-.59,2.75-.59ZM24.66,102.85v-57.79c0-.2,0-.43.03-.64l30.4,29.53-30.4,29.53c-.03-.2-.03-.43-.03-.64ZM116.47,109.66H31.45c-.97,0-1.89-.2-2.75-.61l31.27-30.37,11.63,11.32c.66.64,1.53.97,2.37.97s1.71-.33,2.37-.97l11.63-11.32,31.27,30.37c-.87.41-1.79.61-2.75.61ZM123.26,102.85c0,.2,0,.43-.03.64l-30.4-29.53,30.4-29.53c.08,1.14,0,57.4.03,58.43Z"/>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
           </svg>
         </a>
       </div>
+      <p class="footer-copy">© 2025 Facundo Ayala Muñoz</p>
     </footer>
+
   </section>
 </template>
 
+<script setup>
+import { ref, onMounted, onUnmounted } from 'vue'
+import { useI18n } from '../composables/useI18n.js'
+import { useTheme } from '../composables/useTheme.js'
+
+const { isDay } = useTheme()
+const { t } = useI18n()
+const sectionEl = ref(null)
+const noiseEl   = ref(null)
+
+const STARS = [
+  { id:1, x:12, y:8,  delay:0.3, sz:7 },
+  { id:2, x:35, y:5,  delay:1.1, sz:5 },
+  { id:3, x:58, y:10, delay:0.7, sz:8 },
+  { id:4, x:80, y:6,  delay:1.6, sz:6 },
+  { id:5, x:92, y:12, delay:0.4, sz:5 },
+  { id:6, x:24, y:18, delay:2.0, sz:4 },
+  { id:7, x:68, y:16, delay:1.3, sz:6 },
+]
+
+function initNoise() {
+  const c = noiseEl.value
+  if (!c) return
+  const ctx = c.getContext('2d')
+  let id = null
+  const resize = () => {
+    c.width  = Math.ceil(window.innerWidth  / 2)
+    c.height = Math.ceil(window.innerHeight / 2)
+    c.style.width  = window.innerWidth  + 'px'
+    c.style.height = window.innerHeight + 'px'
+  }
+  resize()
+  window.addEventListener('resize', resize)
+  let frame = 0
+  const draw = () => {
+    frame++
+    if (frame % 2 === 0) {
+      const w = c.width, h = c.height
+      const img = ctx.createImageData(w, h)
+      for (let i = 0; i < img.data.length; i += 4) {
+        const v = (Math.random() * 255) | 0
+        img.data[i] = img.data[i+1] = img.data[i+2] = v
+        img.data[i+3] = 16
+      }
+      ctx.putImageData(img, 0, 0)
+    }
+    id = requestAnimationFrame(draw)
+  }
+  draw()
+  c._stop = () => { cancelAnimationFrame(id); window.removeEventListener('resize', resize) }
+}
+
+onMounted(() => { initNoise() })
+onUnmounted(() => { noiseEl.value?._stop?.() })
+</script>
 
 <style scoped>
-.contact__graffiti-svg {
-  position: absolute;
-  pointer-events: none;
-  user-select: none;
-  z-index: 1;
-}
-.contact__graffiti-svg--1 {
-  width: min(78vw, 1020px);
-  bottom: 0%;
-  right: -24%;
-  transform: rotate(10deg) scaleY(0.9);
-  opacity: 0.9;
-}
-.contact__graffiti-svg--2 {
-  width: clamp(440px, 68vw, 880px);
-  top: 4%;
-  left: -22%;
-  transform: rotate(-8deg) scaleX(1.1);
-  opacity: 0.88;
-}
-
+/* ── shell ────────────────────────────────────────────────────────────────── */
 .contact {
   position: relative;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   overflow: hidden;
-  padding: 9rem 2.5rem 0;
-  background: var(--black);
+
 }
 
-.contact__bg {
-  position: absolute;
-  inset: 0;
+/* ── sky ──────────────────────────────────────────────────────────────────── */
+.contact__sky { position: absolute; inset: 0; z-index: 0; }
+.csky-base {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 58%, var(--sky-bot) 100%);
+  transition: background 1.5s ease;
+}
+.csky-haze {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 100% 50% at 50% 100%, var(--sky-bot) 0%, transparent 65%);
+  opacity: 0.75; transition: background 1.5s ease;
+}
+.csky-glow { position: absolute; inset: 0; transition: opacity 1.5s ease; }
+.csky-glow--night {
+  background: radial-gradient(ellipse 40% 35% at 15% 20%, rgba(60,90,200,.15) 0%, transparent 65%);
+}
+.csky-glow--day {
+  background:
+    radial-gradient(ellipse 55% 45% at 82% 15%, rgba(255,200,60,.40) 0%, transparent 68%),
+    radial-gradient(ellipse 75% 38% at 50% 92%, rgba(255,130,30,.28) 0%, transparent 60%);
+}
+
+/* ── noise ────────────────────────────────────────────────────────────────── */
+.contact__noise {
+  position: absolute; inset: 0; pointer-events: none; z-index: 9;
+  mix-blend-mode: overlay; opacity: 0.35; image-rendering: pixelated;
+}
+
+/* ── vignette ─────────────────────────────────────────────────────────────── */
+.contact__vignette {
+  position: absolute; inset: 0; z-index: 8;
+  background:
+    radial-gradient(ellipse 85% 85% at 50% 50%, transparent 45%, rgba(0,0,0,.45) 100%),
+    linear-gradient(to bottom, rgba(0,0,0,.12) 0%, transparent 25%, transparent 65%, rgba(0,0,0,.22) 100%);
   pointer-events: none;
 }
-.bg-glow {
+
+/* ── stars ────────────────────────────────────────────────────────────────── */
+.cstar {
   position: absolute;
-  border-radius: 50%;
-  filter: blur(100px);
+  width: var(--sz,8px); height: var(--sz,8px);
+  color: var(--star-color);
+  animation: ctwinkle 3.5s ease-in-out infinite;
+  animation-delay: var(--delay,0s);
+  z-index: 2; pointer-events: none;
 }
-.bg-glow--1 {
-  width: 70vw; height: 70vw;
-  top: -10%; left: -15%;
-  background: radial-gradient(circle, rgba(135,22,51,0.14) 0%, transparent 70%);
-}
-.bg-glow--2 {
-  width: 50vw; height: 50vw;
-  bottom: -5%; right: -5%;
-  background: radial-gradient(circle, rgba(86,14,33,0.1) 0%, transparent 70%);
-}
-.bg-noise {
-  position: absolute;
-  inset: 0;
-  opacity: 0.025;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+@keyframes ctwinkle {
+  0%,100% { opacity:.85; transform:scale(1); }
+  50%      { opacity:.15; transform:scale(.6); }
 }
 
+/* ── text content ─────────────────────────────────────────────────────────── */
 .contact__content {
-  position: relative;
-  z-index: 2;
+  position: relative; z-index: 10;
+  padding: clamp(7rem, 14vh, 11rem) clamp(2rem, 6vw, 7rem) 2rem;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  max-width: 70%;
-  padding-top: 4rem;
+  gap: 0.2rem;
 }
 
-.contact__label {
-  font-size: 0.65rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  opacity: 0.3;
-  margin-bottom: 2.5rem;
-}
-.bracket { font-size: 0.9em; }
-.red { color: var(--red); }
+/* ── editorial rows ── */
+.h-row { display: flex; align-items: baseline; line-height: 1; }
+.h-row--left   { justify-content: flex-start; gap: 1.4rem; align-items: center; margin-bottom: 0.4rem; padding-left: 22vw; }
+.h-row--center { justify-content: center; }
+.h-row--right  { justify-content: flex-end; padding-right: 10vw; }
+.h-row--cta    { margin-top: 0.6rem; margin-bottom: 4.5rem; }
 
-.contact__headline {
+.h-small {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: clamp(1rem, 2.2vw, 1.7rem);
+  color: #f0e8d0;
+  opacity: 0.55;
+  letter-spacing: 0.02em;
+}
+.h-huge {
   font-family: var(--font-display);
-  font-size: clamp(1.2rem, 2.4vw, 2.6rem);
-  letter-spacing: -0.025em;
-  line-height: 1.2;
-  margin-bottom: 4rem;
-  display: flex;
-  flex-direction: column;
+  font-size: clamp(3.5rem, 11vw, 10rem);
+  line-height: 0.86;
+  letter-spacing: -0.04em;
+  color: #f0e8d0;
+  text-transform: uppercase;
+  text-shadow: none;
 }
-.h-line { display: block; }
-.h-line em { font-style: normal; color: var(--red); }
+.h-mid {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: clamp(1.2rem, 3vw, 2.6rem);
+  color: var(--red);
+  letter-spacing: 0.01em;
+  opacity: 0.9;
+}
+.h-call {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(2.4rem, 5.5vw, 5rem);
+  color: #f0e8d0;
+  opacity: 1;
+  letter-spacing: -0.02em;
+}
+
+:root[data-theme="day"] .h-huge  { color: #0e1a35; text-shadow: 0 2px 24px rgba(255,180,60,.25); }
+:root[data-theme="day"] .h-small { color: #0e1a35; }
+:root[data-theme="day"] .h-call  { color: #0e1a35; }
+
+.contact__cta { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; width: 100%; }
 
 .contact__email {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6em;
-  font-family: var(--font-display);
-  font-size: clamp(0.9rem, 1.6vw, 1.5rem);
-  letter-spacing: 0.02em;
-  color: var(--white);
-  cursor: none;
-  position: relative;
-  padding-bottom: 8px;
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  text-decoration: none;
+  color: #f0e8d0;
+  width: fit-content;
+  transition: gap 0.25s ease, opacity 0.2s;
 }
-.email-text { transition: opacity 0.3s; }
-.contact__email:hover .email-text { opacity: 0.65; }
+:root[data-theme="day"] .contact__email { color: #0e1a35; }
+.contact__email:hover { gap: 1rem; opacity: 0.82; }
 
-.email-line {
+.email-text {
+  font-family: var(--font-body);
+  font-size: clamp(0.88rem, 1.6vw, 1.2rem);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 0.1em;
+}
+.email-arrow {
+  font-size: 1.1em;
+  line-height: 1;
+  transition: transform 0.25s ease;
+}
+.contact__email:hover .email-arrow { transform: translate(3px, -3px); }
+
+/* ── horizon / ground ────────────────────────────────────────────────────────── */
+.contact__horizon {
   position: absolute;
   bottom: 0; left: 0; right: 0;
-  height: 1.5px;
-  background: var(--white);
-  transform-origin: left;
-  transform: scaleX(0);
-  transition: transform 0.55s var(--ease-out);
+  height: clamp(220px, 48vh, 520px);
+  z-index: 6; pointer-events: none;
+  --ch-ground: #08060200;
 }
-.contact__email:hover .email-line { transform: scaleX(1); }
-
-.email-arrow {
-  font-size: 0.8em;
-  opacity: 0;
-  transform: translate(-6px, 6px);
-  transition: opacity 0.3s, transform 0.4s var(--ease-out);
-  color: var(--red);
-}
-.contact__email:hover .email-arrow { opacity: 1; transform: translate(0, 0); }
-
-.contact__avail {
-  margin-top: 1.2rem;
-  font-size: 0.7rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  opacity: 0.25;
+:root[data-theme="day"] .contact__horizon {
+  --ch-ground: #1a3a0800;
 }
 
+/* flat ground fill that fades up into transparency */
+.ch-ground {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 38%;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--ch-ground, transparent) 100%
+  );
+}
+
+/* shared PNG mask — same cloud asset as hero */
+.ch {
+  position: absolute;
+  -webkit-mask-image: url('../assets/img/cloud_loader.png');
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: bottom center;
+  mask-image: url('../assets/img/cloud_loader.png');
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+  mask-position: bottom center;
+  transition: background 1.5s ease, opacity 1.5s ease;
+}
+
+/* atmospheric haze — widest, softest, deepest back */
+.ch--haze {
+  width: 132%; left: -16%; bottom: 0;
+  height: clamp(100px, 22vw, 200px);
+  background: var(--cloud-fill);
+  opacity: 0.14; filter: blur(20px);
+}
+/* wide baseline bank */
+.ch--back {
+  width: 120%; left: -10%; bottom: 0;
+  height: clamp(75px, 17vw, 158px);
+  background: var(--cloud-fill);
+  opacity: 0.24; filter: blur(8px);
+}
+/* mid left rolling bank */
+.ch--mid-l {
+  width: 82%; left: -8%; bottom: 0;
+  height: clamp(100px, 22vw, 195px);
+  background: var(--cloud-fill);
+  opacity: 0.46; filter: blur(4px);
+}
+/* mid right bank, mirrored */
+.ch--mid-r {
+  width: 75%; right: -7%; bottom: 0;
+  height: clamp(85px, 19vw, 170px);
+  background: var(--cloud-fill);
+  opacity: 0.36; filter: blur(5px);
+  transform: scaleX(-1);
+}
+/* tall left dramatic peak */
+.ch--tall-l {
+  width: 58%; left: -5%; bottom: 0;
+  height: clamp(140px, 31vw, 280px);
+  background: var(--cloud-fill-2);
+  opacity: 0.70;
+}
+/* front left crisp layer */
+.ch--front-l {
+  width: 66%; left: -4%; bottom: 0;
+  height: clamp(88px, 20vw, 175px);
+  background: var(--cloud-fill-2);
+  opacity: 0.88;
+}
+/* front right crisp, mirrored */
+.ch--front-r {
+  width: 56%; right: -2%; bottom: 0;
+  height: clamp(68px, 15vw, 130px);
+  background: var(--cloud-fill-2);
+  opacity: 0.80;
+  transform: scaleX(-1);
+}
+
+/* ── footer ───────────────────────────────────────────────────────────────── */
 .site-footer {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  border-top: 1px solid rgba(255,255,255,0.05);
-  padding: 1.8rem 0 2.2rem;
+  position: relative; z-index: 12;
   margin-top: auto;
+  padding: 1.5rem clamp(2rem, 8vw, 9rem) clamp(1.5rem, 3vh, 2.5rem);
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
 }
 .footer-icons {
-  display: flex;
-  gap: 1.4rem;
-  align-items: center;
+  display: flex; align-items: center; gap: 1.2rem;
 }
 .footer-icon-link {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  opacity: 0.55;
-  cursor: none;
-  transition: opacity 0.25s, transform 0.25s var(--ease-out);
+  color: #f0e8d0;
+  opacity: 0.40;
+  transition: opacity 0.2s, transform 0.2s;
 }
-.footer-icon-link svg {
-  width: 36px;
-  height: 36px;
+:root[data-theme="day"] .footer-icon-link { color: #1a2a4a; }
+.footer-icon-link:hover { opacity: 1; transform: translateY(-3px); }
+.footer-icon-link svg { width: 26px; height: 26px; }
+.footer-copy {
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  color: #f0e8d0;
+  opacity: 0.22;
 }
-.footer-icon-link:hover {
-  opacity: 1;
-  transform: translateY(-3px);
-}
+:root[data-theme="day"] .footer-copy { color: #1a2a4a; }
 
-@media (max-width: 1200px) {
-  .contact { min-height: auto; padding: 6rem 2rem 0; }
-  .contact__content { padding-top: 2rem; max-width: 85%; }
-  .contact__graffiti-svg--2 { display: none; }
-  .site-footer { margin-top: 3rem; }
-}
-
+/* ── responsive ───────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .contact { padding: 6rem 1.5rem 0; overflow-x: clip; overflow-y: visible; }
-  .contact__graffiti-svg--1 { display: none; }
-  .contact__graffiti-svg--2 { display: block; width: 70vw; left: -10%; top: 6%; }
-  .contact__content { max-width: 100%; }
-  .site-footer { margin-top: 4rem; padding-bottom: 1.2rem; }
-  .contact__headline { font-size: clamp(1.8rem, 8vw, 3rem); line-height: 1.1; margin-bottom: 2.5rem; }
+  .contact__content { padding: 4rem 1.5rem 1.5rem; }
+  .site-footer       { padding: 1rem 1.5rem 1.5rem; }
 }
 </style>

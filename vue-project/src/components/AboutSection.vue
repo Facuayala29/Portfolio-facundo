@@ -1,6 +1,5 @@
 <template>
   <section class="about" id="about" ref="aboutEl">
-    <img class="about__graffiti-svg about__graffiti-svg--r" src="/graffiti/g02.svg" alt="" aria-hidden="true" draggable="false" loading="lazy" decoding="async" data-reveal="right" data-delay="0.05" />
 
     <div class="about__scroll"></div>
 
@@ -8,7 +7,7 @@
       <div class="about__inner">
 
         <div class="about__header" ref="headerEl">
-          <span class="tag">{{ t('about.tag') }}</span>
+          <span class="tag about__tag-title" :style="isDay ? { color: '#1a2a4a' } : { color: '#c47a15' }">{{ t('about.tag') }}</span>
           <span class="about__header-line"></span>
         </div>
 
@@ -24,7 +23,7 @@
                 allowfullscreen
               ></iframe>
               <button v-else class="video-facade" @click="videoActive = true" aria-label="Play video">
-                <img src="https://img.youtube.com/vi/P2YGRDogx0Q/hqdefault.jpg" alt="" loading="lazy" decoding="async" />
+                <img src="/about-thumb.jpg" alt="" loading="lazy" decoding="async" />
                 <span class="video-facade__play" aria-hidden="true"></span>
               </button>
             </div>
@@ -48,8 +47,10 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { useI18n } from '../composables/useI18n.js'
+import { useTheme } from '../composables/useTheme.js'
 
 const { t } = useI18n()
+const { isDay } = useTheme()
 
 const aboutEl = ref(null)
 const pinEl = ref(null)
@@ -134,7 +135,7 @@ function tick() {
 
   if (!measured) measure()
 
-  pinEl.value.style.background = `rgba(10,10,12,${phase(p, 0, 0.15).toFixed(2)})`
+  pinEl.value.style.background = `color-mix(in srgb, var(--black) ${Math.round(phase(p, 0, 0.15) * 90)}%, transparent)`
 
   if (headerEl.value) {
     const hp = easeOut(phase(p, 0.08, 0.22))
@@ -163,7 +164,11 @@ function tick() {
     const total = wordEls.length
     wordEls.forEach((span, i) => {
       const threshold = 0.58 + (i / (total - 1)) * 0.42
-      span.style.color = p >= threshold ? 'rgba(245,245,240,0.82)' : 'rgba(245,245,240,0.15)'
+      const litColor = isDay.value ? '#1a2a4a' : '#f0e8d0'
+      const dimColor  = isDay.value
+        ? 'color-mix(in srgb, #1a2a4a 30%, transparent)'
+        : 'color-mix(in srgb, #f0e8d0 35%, transparent)'
+      span.style.color = p >= threshold ? litColor : dimColor
     })
   }
 }
@@ -190,19 +195,7 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.about__graffiti-svg {
-  position: absolute;
-  pointer-events: none;
-  user-select: none;
-}
-.about__graffiti-svg--r {
-  width: clamp(320px, 48vw, 680px);
-  top: 8%;
-  right: -18%;
-  transform: rotate(7deg) scaleY(1.06);
-  opacity: 0.82;
-  z-index: 2;
-}
+
 
 .about {
   position: relative;
@@ -246,9 +239,20 @@ onUnmounted(() => {
   font-size: clamp(0.85rem, 1.4vw, 1.2rem);
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  opacity: 0.35;
+  opacity: 0.60;
   white-space: nowrap;
 }
+.about__tag-title {
+  font-family: var(--font-hero);
+  font-weight: 800;
+  font-style: normal;
+  font-size: clamp(1.9rem, 4.5vw, 4.5rem);
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+  text-transform: none;
+  opacity: 1;
+}
+
 .about__header-line {
   flex: 1;
   height: 1px;
@@ -305,7 +309,21 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.85;
+  opacity: 0.92;
+  filter: contrast(1.06) saturate(1.12) brightness(1.03);
+}
+.video-facade::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(0,0,0,0.18) 0%,
+    rgba(0,0,0,0.04) 50%,
+    rgba(0,0,0,0.22) 100%
+  );
+  border-radius: inherit;
+  pointer-events: none;
 }
 .video-facade__play {
   position: relative;
@@ -336,7 +354,7 @@ onUnmounted(() => {
   z-index: -1;
   border-radius: 50%;
   background: radial-gradient(ellipse at 50% 55%,
-    rgba(135,22,51,0.20) 0%,
+    rgba(var(--red), 0.12) 0%,
     rgba(100,20,200,0.12) 45%,
     transparent 72%);
   filter: blur(35px);

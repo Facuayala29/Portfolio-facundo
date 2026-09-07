@@ -44,11 +44,14 @@
       </div>
 
       <div class="text-center">
-        <h2 class="text-block">
-          <span class="tline" ref="l1">{{ t('manifesto.line1') }}</span>
-          <span class="tline" ref="l2">{{ t('manifesto.line2') }}</span>
+        <h2 class="text-block" :style="isDay ? { color: '#1a2a4a' } : { color: '#f0e8d0' }">
+          <span class="tline tline--label" ref="l1">
+            <span class="label-accent">{{ t('manifesto.line1').split(' ')[0] }}</span>
+            {{ ' ' + t('manifesto.line1').split(' ').slice(1).join(' ') }}
+          </span>
+          <span class="tline tline--hero" ref="l2">{{ t('manifesto.line2') }}</span>
           <span class="tline tline--row">
-            <span ref="l3a">{{ t('manifesto.line3a') }}</span>
+            <span class="tline--sub" ref="l3a">{{ t('manifesto.line3a') }}</span>
             <span class="accent" ref="l3b">{{ t('manifesto.line3b') }}</span>
           </span>
         </h2>
@@ -61,8 +64,10 @@
 <script setup>
 import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import { useI18n } from '../composables/useI18n.js'
+import { useTheme } from '../composables/useTheme.js'
 
 const { t } = useI18n()
+const { isDay } = useTheme()
 
 const sectionEl = ref(null)
 const pinEl = ref(null)
@@ -176,7 +181,7 @@ onUnmounted(() => {
 <style scoped>
 .manifesto {
   position: relative;
-  background: #0a0a0c;
+  background: var(--black); /* follows theme like the rest of the site */
 }
 .manifesto__scroll {
   height: 500vh;
@@ -241,31 +246,70 @@ onUnmounted(() => {
   pointer-events: none;
 }
 .text-block {
-  font-family: var(--font-graffiti);
-  font-size: clamp(1.6rem, 3.8vw, 3.4rem);
-  line-height: 1.35;
-  letter-spacing: 0.01em;
   text-align: center;
   display: flex;
   flex-direction: column;
-  color: var(--white);
+  align-items: center;
+  gap: 0.15em;
   padding: 0 1.5rem;
 }
-.tline {
+
+/* line 1 — small tracked label in body font */
+.tline--label {
   display: block;
   will-change: opacity;
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 1.6vw, 1.4rem);
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  opacity: 0.42;
+  margin-bottom: 0.4em;
 }
+
+/* line 2 — large Fugaz One hero line */
+.tline--hero {
+  display: block;
+  will-change: opacity;
+  font-family: var(--font-hero);
+  font-size: clamp(3.2rem, 7.5vw, 7.8rem);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+}
+
+/* line 3 row */
 .tline--row {
   display: flex;
-  gap: 0.28em;
+  gap: 0.25em;
   justify-content: center;
+  align-items: baseline;
   overflow: visible;
+  margin-top: 0.35em;
 }
-.tline--row span {
+
+/* "Building" — body font, medium weight */
+.tline--sub {
   display: inline-block;
   will-change: transform, opacity;
+  font-family: var(--font-body);
+  font-size: clamp(1.4rem, 2.8vw, 3rem);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  opacity: 0.72;
 }
-.accent { color: var(--red); }
+
+/* "experiences" — Fugaz One, red, big */
+.accent {
+  display: inline-block;
+  will-change: transform, opacity;
+  font-family: var(--font-hero);
+  font-size: clamp(2.8rem, 6.2vw, 6.4rem);
+  line-height: 1;
+  color: var(--red);
+}
+
+/* first word accent — always orange */
+.label-accent { color: var(--red); }
 
 @media (min-width: 769px) and (max-width: 1100px) {
   .card--tl { width: 320px; }
@@ -277,7 +321,9 @@ onUnmounted(() => {
 }
 
 @media (max-width: 768px) {
-  .text-block { font-size: clamp(1.5rem, 6vw, 3.4rem); }
+  .tline--hero  { font-size: clamp(2.4rem, 10vw, 5rem); }
+  .accent       { font-size: clamp(2rem, 8vw, 4rem); }
+  .tline--sub   { font-size: clamp(1rem, 4vw, 2rem); }
   .card--tl { width: 52vw; left: 2%; }
   .card--tr { width: 28vw; left: 48%; }
   .card--ml { width: 28vw; top: 62%; }

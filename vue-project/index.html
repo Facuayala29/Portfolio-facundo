@@ -8,7 +8,7 @@
     <meta name="description" content="Facundo Ayala is a Multimedia Designer based in Aarhus, Denmark. UX/UI, brand identity, information design and frontend development." />
     <meta name="author" content="Facundo Ayala" />
     <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#161616" />
+    <meta name="theme-color" content="#060c1e" />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Facundo Ayala Portfolio" />
@@ -19,14 +19,24 @@
 
     <meta name="card" content="summary_large_image" />
     <meta name="title" content="Facundo Ayala | Multimedia Designer" />
-    <meta name="description" content="UX/UI, brand identity, information design and frontend development. Based in Aarhus, Denmark." />
     <meta name="image" content="/hero.png" />
 
     <link rel="icon" type="image/svg+xml" href="/ficon.svg" />
     <link rel="icon" type="image/x-icon" href="/ficon.ico" />
 
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fugaz+One&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet" />
+
     <link rel="preload" href="/fonts/CyberBrush.ttf" as="font" type="font/ttf" crossorigin />
-    <link rel="preload" href="/hero.png" as="image" />
+
+    <!-- Apply theme before Vue loads to prevent flash -->
+    <script>
+      (function() {
+        var t = localStorage.getItem('portfolio-theme') || 'night';
+        document.documentElement.dataset.theme = t;
+      })();
+    </script>
 
     <script type="application/ld+json">
     {

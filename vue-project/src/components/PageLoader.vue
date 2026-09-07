@@ -4,16 +4,26 @@
       <div class="loader__noise"></div>
       <div class="loader__inner">
         <div class="loader__logo">
-          <span class="l-dsgn">Facundo Ayala</span>
+          <span class="l-dsgn">Facundo Ayala Muñoz</span>
         </div>
-        <div class="loader__track">
-          <div class="loader__fill" :style="{ transform: `scaleX(${progress / 100})` }"></div>
+
+        <!-- cloud PNG progress bar -->
+        <div class="loader__bar-wrap">
+          <div class="bar-container">
+            <!-- ghost: full cloud silhouette at low opacity -->
+            <div class="bar-ghost" :class="isDay ? 'ghost--day' : 'ghost--night'"></div>
+            <!-- fill: sweeps left-to-right as progress grows -->
+            <div class="bar-fill" :class="isDay ? 'fill--day' : 'fill--night'"
+                 :style="{ clipPath: `inset(0 ${100 - progress}% 0 0)` }"></div>
+          </div>
         </div>
+
         <div class="loader__pct">
           <span class="pct-num">{{ Math.round(progress) }}</span>
           <span class="pct-sym">%</span>
         </div>
       </div>
+
       <div class="loader__tagline">Multimedia Designer Portfolio</div>
     </div>
   </Transition>
@@ -21,11 +31,13 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useTheme } from '../composables/useTheme.js'
 
 defineEmits(['done'])
 
-const visible = ref(true)
-const progress = ref(0)
+const { isDay } = useTheme()
+const visible   = ref(true)
+const progress  = ref(0)
 
 onMounted(() => {
   const duration = 2000
@@ -42,7 +54,8 @@ onMounted(() => {
       requestAnimationFrame(tick)
     } else {
       progress.value = 100
-      setTimeout(() => { visible.value = false }, 350)
+      // short pause at 100%, then fade to hero
+      setTimeout(() => { visible.value = false }, 300)
     }
   }
 
@@ -62,6 +75,10 @@ onMounted(() => {
   justify-content: center;
 }
 
+/* simple fade out — no cloud wipe on load */
+.loader-leave-active { transition: opacity 0.5s ease; }
+.loader-leave-to     { opacity: 0; }
+
 .loader__noise {
   position: absolute;
   inset: 0;
@@ -80,36 +97,66 @@ onMounted(() => {
 
 .loader__logo {
   font-family: var(--font-display);
-  font-size: clamp(1.8rem, 12vw, 8rem);
+  font-size: clamp(1.4rem, 5.5vw, 4rem);
   letter-spacing: -0.02em;
-  line-height: 1;
+  line-height: 1.05;
   display: flex;
   align-items: baseline;
   white-space: nowrap;
+  text-align: center;
+  max-width: 90vw;
   animation: logoBreath 2s ease-in-out infinite;
 }
 @keyframes logoBreath {
   0%, 100% { letter-spacing: -0.02em; }
-  50% { letter-spacing: 0.01em; }
+  50%       { letter-spacing: 0.01em; }
 }
-
 .l-dsgn { color: var(--red); }
 
-.loader__track {
-  width: 180px;
-  height: 1px;
-  background: rgba(255,255,255,0.08);
-  overflow: hidden;
+/* ── cloud PNG bar ──────────────────────────────────────────────── */
+.loader__bar-wrap { line-height: 0; }
+
+.bar-container {
   position: relative;
-}
-.loader__fill {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to right, var(--red), var(--white));
-  transform-origin: left;
-  transition: transform 0.04s linear;
+  width: clamp(240px, 50vw, 460px);
+  /* proportional to cloud_loader.png: 1745 × 482 */
+  aspect-ratio: 1745 / 482;
 }
 
+/* both layers share the same PNG mask */
+.bar-ghost,
+.bar-fill {
+  position: absolute;
+  inset: 0;
+  -webkit-mask-image: url('../assets/img/cloud_loader.png');
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-image: url('../assets/img/cloud_loader.png');
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+}
+
+/* ghost: shows the full cloud outline faintly */
+.ghost--night { background: rgba(215,165,40,0.20); }
+.ghost--day   { background: rgba(88,52,8,0.16); }
+
+/* fill: sweeps across as progress increases */
+.fill--night {
+  background: linear-gradient(90deg,
+    rgba(215,165,40,0.96)  0%,
+    rgba(245,208,90,0.88) 60%,
+    rgba(255,235,155,0.76) 100%);
+}
+.fill--day {
+  background: linear-gradient(90deg,
+    rgba(88,52,8,0.92)    0%,
+    rgba(162,98,20,0.82)  60%,
+    rgba(198,132,34,0.72) 100%);
+}
+
+/* ── pct ────────────────────────────────────────────────────────── */
 .loader__pct {
   font-family: var(--font-display);
   font-size: 0.85rem;
@@ -131,11 +178,4 @@ onMounted(() => {
   white-space: nowrap;
 }
 
-.loader-leave-active {
-  transition: opacity 0.5s ease, transform 0.5s var(--ease-in-out);
-}
-.loader-leave-to {
-  opacity: 0;
-  transform: translateY(-16px);
-}
 </style>
