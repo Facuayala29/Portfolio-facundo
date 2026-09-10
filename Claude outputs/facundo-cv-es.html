@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Facundo Ayala Munoz - Diseñador Multimedia</title>
+<link href="https://fonts.googleapis.com/css2?family=Fugaz+One&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --amber:     #c47a15;
+    --navy:      #1a2a4a;
+    --navy-dk:   #0e1525;
+    --cream:     #f0e8d0;
+    --ink:       rgba(14,21,37,0.74);
+    --ink-faint: rgba(14,21,37,0.42);
+    --font-d:    'Fugaz One', sans-serif;
+    --font-b:    'Space Grotesk', sans-serif;
+  }
+
+  @page { size: A4 portrait; margin: 0; }
+
+  html {
+    width: 210mm;
+    height: 297mm;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    color-adjust: exact;
+  }
+
+  body {
+    width: 210mm;
+    height: 297mm;
+    overflow: hidden;
+    font-family: var(--font-b);
+    background: var(--cream);
+    color: var(--navy-dk);
+  }
+
+  .page {
+    width: 210mm;
+    height: 297mm;
+    padding: 0 16mm;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ── HEADER ───────────────────────────────────────────── */
+  .cv-header {
+    padding: 13mm 0 0;
+  }
+
+  .cv-name {
+    font-family: var(--font-d);
+    font-size: 34pt;
+    color: var(--navy-dk);
+    line-height: 0.95;
+    letter-spacing: 0.01em;
+  }
+
+  .cv-role {
+    font-size: 8pt;
+    font-weight: 400;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-top: 3mm;
+    margin-bottom: 4mm;
+  }
+
+  .cv-contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 5mm;
+    padding: 3mm 0;
+    border-top: 1.5px solid var(--amber);
+    border-bottom: 1px solid rgba(26,42,74,0.12);
+    margin-bottom: 7mm;
+  }
+
+  .cc-item {
+    display: flex;
+    align-items: center;
+    gap: 1.5mm;
+  }
+
+  .cc-key {
+    font-size: 5.5pt;
+    font-weight: 600;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--amber);
+  }
+
+  .cc-val {
+    font-size: 7pt;
+    font-weight: 300;
+    color: var(--ink);
+  }
+
+  /* ── SECTION ──────────────────────────────────────────── */
+  .sec {
+    margin-bottom: 5.5mm;
+  }
+
+  .sec-head {
+    font-family: var(--font-d);
+    font-size: 7.5pt;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--navy);
+    margin-bottom: 3.5mm;
+    display: flex;
+    align-items: center;
+    gap: 3mm;
+  }
+
+  .sec-head::before {
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 10px;
+    background: var(--amber);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  .sec-head::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, rgba(26,42,74,0.18), transparent);
+  }
+
+  /* profile */
+  .profile-p {
+    font-size: 7.8pt;
+    font-weight: 300;
+    line-height: 1.80;
+    color: var(--ink);
+  }
+
+  /* competencies */
+  .comp-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2mm 0;
+    column-gap: 0;
+  }
+
+  .comp-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 2mm;
+    width: 100%;
+  }
+
+  .comp {
+    font-size: 7pt;
+    font-weight: 400;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 2.5mm;
+  }
+
+  .comp::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--amber);
+    flex-shrink: 0;
+  }
+
+  /* timeline */
+  .t-item {
+    display: grid;
+    grid-template-columns: 20mm 1fr;
+    gap: 3mm;
+    margin-bottom: 4mm;
+  }
+  .t-item:last-child { margin-bottom: 0; }
+
+  .t-date {
+    font-size: 6pt;
+    font-weight: 300;
+    color: var(--ink-faint);
+    line-height: 1.55;
+    padding-top: 0.5mm;
+  }
+
+  .t-body h4 {
+    font-family: var(--font-d);
+    font-size: 8.5pt;
+    color: var(--navy-dk);
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    margin-bottom: 0.8mm;
+  }
+
+  .t-place {
+    font-size: 6.5pt;
+    font-weight: 500;
+    color: var(--amber);
+    margin-bottom: 1.5mm;
+  }
+
+  .t-desc {
+    font-size: 7pt;
+    font-weight: 300;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+
+  .t-focus {
+    font-size: 6.5pt;
+    font-weight: 300;
+    color: var(--ink-faint);
+    font-style: italic;
+    margin-top: 1mm;
+  }
+
+  /* tools and languages row */
+  .bottom-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6mm;
+    margin-bottom: 5.5mm;
+  }
+
+  .tools-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5mm;
+  }
+
+  .tool {
+    font-size: 6pt;
+    font-weight: 400;
+    color: var(--ink);
+    border: 1px solid rgba(26,42,74,0.22);
+    border-radius: 20px;
+    padding: 0.8mm 2.2mm;
+    letter-spacing: 0.03em;
+  }
+
+  .lang-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 2.2mm;
+  }
+  .lang-row:last-child { margin-bottom: 0; }
+
+  .l-name {
+    font-size: 7.5pt;
+    font-weight: 300;
+    color: var(--ink);
+  }
+
+  .l-lvl {
+    font-size: 6pt;
+    font-weight: 600;
+    color: var(--amber);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* about */
+  .about-p {
+    font-size: 7pt;
+    font-weight: 300;
+    line-height: 1.72;
+    color: var(--ink-faint);
+  }
+
+  /* footer */
+  .cv-footer {
+    margin-top: auto;
+    padding-bottom: 10mm;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .ref-line {
+    font-size: 6pt;
+    font-weight: 300;
+    color: rgba(14,21,37,0.28);
+    letter-spacing: 0.10em;
+  }
+
+  @media print {
+    html, body { overflow: hidden; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="cv-header">
+    <h1 class="cv-name">Facundo Ayala Munoz</h1>
+    <p class="cv-role">Diseñador Multimedia</p>
+    <div class="cv-contact">
+      <div class="cc-item">
+        <span class="cc-key">Correo</span>
+        <span class="cc-val">facuayala28@gmail.com</span>
+      </div>
+      <div class="cc-item">
+        <span class="cc-key">Tel</span>
+        <span class="cc-val">+45 91 99 32 78</span>
+      </div>
+      <div class="cc-item">
+        <span class="cc-key">Ubicación</span>
+        <span class="cc-val">Aarhus, Dinamarca</span>
+      </div>
+      <div class="cc-item">
+        <span class="cc-key">Portfolio</span>
+        <span class="cc-val">facundoayala.dk</span>
+      </div>
+      <div class="cc-item">
+        <span class="cc-key">LinkedIn</span>
+        <span class="cc-val">Facundo Ayala Munoz</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- PERFIL -->
+  <div class="sec">
+    <h2 class="sec-head">Perfil</h2>
+    <p class="profile-p">Diseñador multimedia con experiencia en UX, desarrollo frontend, diseño gráfico, motion, marketing digital y creación de contenido. Crecí en Argentina y estudio en Dinamarca, con años en gastronomía y retail antes de la carrera de diseño. Esa combinación me dio una perspectiva amplia y el hábito de conectar cosas que normalmente no van juntas. Actualmente estudiando en EASV y con proyectos freelance en paralelo.</p>
+  </div>
+
+  <!-- COMPETENCIAS -->
+  <div class="sec">
+    <h2 class="sec-head">Competencias Seleccionadas</h2>
+    <div class="comp-grid">
+      <span class="comp">Diseño UI/UX</span>
+      <span class="comp">Desarrollo Frontend</span>
+      <span class="comp">Identidad de Marca</span>
+      <span class="comp">Diseño Visual</span>
+      <span class="comp">Diseño de Información</span>
+      <span class="comp">Motion Design</span>
+      <span class="comp">Marketing Digital</span>
+      <span class="comp">Creación de Contenido</span>
+      <span class="comp">Investigación UX</span>
+    </div>
+  </div>
+
+  <!-- EDUCACIÓN -->
+  <div class="sec">
+    <h2 class="sec-head">Educación</h2>
+    <div class="t-item">
+      <span class="t-date">2023<br>actualidad</span>
+      <div class="t-body">
+        <h4>AP Degree en Diseño Multimedia</h4>
+        <p class="t-place">EASV, Business Academy SouthWest, Esbjerg, Dinamarca</p>
+        <p class="t-focus">Diseño e Investigación UX/UI · Identidad de Marca · Desarrollo Frontend</p>
+      </div>
+    </div>
+    <div class="t-item">
+      <span class="t-date">2021</span>
+      <div class="t-body">
+        <h4>Bachillerato, Economía y Administración</h4>
+        <p class="t-place">Instituto Nuestra Señora de Luján, Argentina</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPERIENCIA -->
+  <div class="sec">
+    <h2 class="sec-head">Experiencia</h2>
+    <div class="t-item">
+      <span class="t-date">2024<br>actualidad</span>
+      <div class="t-body">
+        <h4>Diseñador Multimedia Freelance</h4>
+        <p class="t-place">Cuenta Propia, Aarhus, Dinamarca</p>
+        <p class="t-desc">Trabajo directamente con clientes para transformar conceptos abstractos en experiencias digitales concretas e identidades visuales coherentes. Los proyectos abarcan diseño web, identidad de marca, investigación UX y desarrollo frontend.</p>
+      </div>
+    </div>
+    <div class="t-item">
+      <span class="t-date">2024<br>actualidad</span>
+      <div class="t-body">
+        <h4>Asistente de Ventas y Estilista Visual</h4>
+        <p class="t-place">Uniq, Aarhus, Dinamarca</p>
+        <p class="t-desc">Organizo la distribución de la tienda y el inventario usando análisis de tendencias para construir narrativas visuales alineadas con la marca.</p>
+      </div>
+    </div>
+    <div class="t-item">
+      <span class="t-date">Ago 2022<br>Oct 2023</span>
+      <div class="t-body">
+        <h4>Encargado de Restaurante</h4>
+        <p class="t-place">Bar Habla, Aarhus, Dinamarca</p>
+        <p class="t-desc">Lideré equipos bajo presión en un entorno gastronómico de alto volumen. Gestioné las operaciones diarias y prioricé la experiencia del cliente de principio a fin.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- HERRAMIENTAS E IDIOMAS -->
+  <div class="bottom-row">
+    <div class="sec" style="margin-bottom:0">
+      <h2 class="sec-head">Herramientas</h2>
+      <div class="tools-wrap">
+        <span class="tool">Figma</span>
+        <span class="tool">Illustrator</span>
+        <span class="tool">Photoshop</span>
+        <span class="tool">InDesign</span>
+        <span class="tool">After Effects</span>
+        <span class="tool">Premiere Pro</span>
+        <span class="tool">HTML / CSS</span>
+        <span class="tool">JavaScript</span>
+        <span class="tool">Vue.js</span>
+        <span class="tool">WordPress</span>
+        <span class="tool">Firebase</span>
+        <span class="tool">Git</span>
+      </div>
+    </div>
+    <div class="sec" style="margin-bottom:0">
+      <h2 class="sec-head">Idiomas</h2>
+      <div class="lang-row">
+        <span class="l-name">Español</span>
+        <span class="l-lvl">Nativo</span>
+      </div>
+      <div class="lang-row">
+        <span class="l-name">Inglés</span>
+        <span class="l-lvl">Profesional</span>
+      </div>
+      <div class="lang-row">
+        <span class="l-name">Danés</span>
+        <span class="l-lvl">Básico</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOBRE MÍ -->
+  <div class="sec">
+    <h2 class="sec-head">Sobre mí</h2>
+    <p class="about-p">Creativo dentro y fuera del trabajo. Me gustan los proyectos de arte DIY, la ilustración, las actividades al aire libre y hacer cosas con las manos que no tengan nada que ver con una pantalla. La misma curiosidad que hay ahí es la que mueve el trabajo de diseño.</p>
+  </div>
+
+  <div class="cv-footer">
+    <span class="ref-line">Referencias disponibles a pedido</span>
+  </div>
+
+</div>
+</body>
+</html>

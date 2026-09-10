@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Facundo Ayala Munoz - Multimedia Designer</title>
+<link href="https://fonts.googleapis.com/css2?family=Fugaz+One&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --amber:      #c47a15;
+    --amber-dim:  rgba(196,122,21,0.30);
+    --navy:       #1a2a4a;
+    --navy-dark:  #0e1525;
+    --cream:      #f0e8d0;
+    --cream-dim:  rgba(240,232,208,0.80);
+    --ink:        rgba(14,21,37,0.72);
+    --ink-faint:  rgba(14,21,37,0.42);
+    --font-d:     'Fugaz One', sans-serif;
+    --font-b:     'Space Grotesk', sans-serif;
+  }
+
+  @page { size: A4 portrait; margin: 0; }
+
+  html {
+    width: 210mm;
+    height: 297mm;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    color-adjust: exact;
+  }
+
+  body {
+    width: 210mm;
+    height: 297mm;
+    overflow: hidden;
+    font-family: var(--font-b);
+    background: var(--cream);
+  }
+
+  /* ── LAYOUT ───────────────────────────────────────────── */
+  .page {
+    display: flex;
+    width: 210mm;
+    height: 297mm;
+    overflow: hidden;
+  }
+
+  /* ── SIDEBAR ──────────────────────────────────────────── */
+  .sidebar {
+    width: 63mm;
+    height: 297mm;
+    background: var(--navy-dark);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+  }
+
+  .photo {
+    width: 63mm;
+    height: 68mm;
+    flex-shrink: 0;
+    background: linear-gradient(160deg, #111d34 0%, #0a1220 100%);
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    padding: 5mm 6mm;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 2px solid var(--amber);
+  }
+
+  /* subtle grid texture in photo area */
+  .photo::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(240,232,208,0.024) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(240,232,208,0.024) 1px, transparent 1px);
+    background-size: 6mm 6mm;
+  }
+
+  .photo-hint {
+    position: relative;
+    font-family: var(--font-d);
+    font-size: 6pt;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(240,232,208,0.09);
+  }
+
+  .sb-body {
+    padding: 6.5mm 6mm;
+    display: flex;
+    flex-direction: column;
+    gap: 5.5mm;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .sb-block {}
+
+  .sb-label {
+    display: block;
+    font-family: var(--font-d);
+    font-size: 6.5pt;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 3mm;
+    padding-bottom: 1.5mm;
+    border-bottom: 1px solid var(--amber-dim);
+  }
+
+  /* contact */
+  .c-row { margin-bottom: 2.2mm; }
+  .c-row:last-child { margin-bottom: 0; }
+  .c-key {
+    display: block;
+    font-size: 5.5pt;
+    font-weight: 600;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: rgba(240,232,208,0.38);
+    margin-bottom: 0.4mm;
+  }
+  .c-val {
+    display: block;
+    font-size: 7pt;
+    font-weight: 300;
+    color: var(--cream-dim);
+    line-height: 1.4;
+    word-break: break-all;
+  }
+
+  /* tools */
+  .tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5mm;
+  }
+  .tool {
+    font-size: 5.8pt;
+    font-weight: 400;
+    color: rgba(240,232,208,0.68);
+    border: 1px solid var(--amber-dim);
+    border-radius: 20px;
+    padding: 0.8mm 2.2mm;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+  }
+
+  /* languages */
+  .lang-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 2mm;
+  }
+  .lang-row:last-child { margin-bottom: 0; }
+  .lang-name {
+    font-size: 7.5pt;
+    font-weight: 300;
+    color: var(--cream-dim);
+  }
+  .lang-lvl {
+    font-size: 5.8pt;
+    font-weight: 600;
+    color: var(--amber);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ── MAIN ─────────────────────────────────────────────── */
+  .main {
+    flex: 1;
+    height: 297mm;
+    background: var(--cream);
+    padding: 11mm 10mm 9mm 9mm;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* header */
+  .m-head {
+    padding-bottom: 5mm;
+    margin-bottom: 6mm;
+    border-bottom: 2px solid var(--amber);
+  }
+  .m-name {
+    font-family: var(--font-d);
+    font-size: 27pt;
+    color: var(--navy-dark);
+    line-height: 0.98;
+    letter-spacing: 0.005em;
+  }
+  .m-role {
+    font-size: 7pt;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-top: 2.5mm;
+  }
+
+  /* section */
+  .sec { margin-bottom: 5.5mm; }
+  .sec:last-of-type { margin-bottom: 0; }
+
+  .sec-title {
+    font-family: var(--font-d);
+    font-size: 7.5pt;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--navy);
+    margin-bottom: 3.5mm;
+    display: flex;
+    align-items: center;
+    gap: 3mm;
+  }
+  .sec-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, rgba(26,42,74,0.20), transparent);
+  }
+
+  /* profile */
+  .profile-p {
+    font-size: 7.5pt;
+    font-weight: 300;
+    line-height: 1.78;
+    color: var(--ink);
+  }
+
+  /* competencies */
+  .comp-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 2mm;
+    column-gap: 1mm;
+  }
+  .comp {
+    font-size: 7pt;
+    font-weight: 400;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 2mm;
+  }
+  .comp::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--amber);
+    flex-shrink: 0;
+  }
+
+  /* timeline */
+  .t-item {
+    display: grid;
+    grid-template-columns: 18mm 1fr;
+    gap: 2.5mm;
+    margin-bottom: 4mm;
+  }
+  .t-item:last-child { margin-bottom: 0; }
+  .t-date {
+    font-size: 6pt;
+    font-weight: 300;
+    color: var(--ink-faint);
+    line-height: 1.5;
+    padding-top: 0.8mm;
+  }
+  .t-body h4 {
+    font-family: var(--font-d);
+    font-size: 8pt;
+    color: var(--navy-dark);
+    letter-spacing: 0.01em;
+    font-weight: 400;
+    margin-bottom: 0.8mm;
+  }
+  .t-place {
+    font-size: 6.5pt;
+    font-weight: 500;
+    color: var(--amber);
+    margin-bottom: 1.5mm;
+  }
+  .t-desc {
+    font-size: 7pt;
+    font-weight: 300;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+  .t-focus {
+    font-size: 6.5pt;
+    font-weight: 300;
+    color: var(--ink-faint);
+    font-style: italic;
+    margin-top: 1mm;
+  }
+
+  /* about */
+  .about-p {
+    font-size: 7pt;
+    font-weight: 300;
+    line-height: 1.70;
+    color: var(--ink-faint);
+  }
+
+  /* footer */
+  .ref {
+    margin-top: auto;
+    padding-top: 4mm;
+    font-size: 5.8pt;
+    font-weight: 300;
+    color: rgba(14,21,37,0.28);
+    letter-spacing: 0.10em;
+    text-align: right;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="photo">
+      <span class="photo-hint">photo</span>
+    </div>
+
+    <div class="sb-body">
+
+      <div class="sb-block">
+        <span class="sb-label">Contact</span>
+        <div class="c-row">
+          <span class="c-key">Email</span>
+          <span class="c-val">facuayala28@gmail.com</span>
+        </div>
+        <div class="c-row">
+          <span class="c-key">Phone</span>
+          <span class="c-val">+45 91 99 32 78</span>
+        </div>
+        <div class="c-row">
+          <span class="c-key">Location</span>
+          <span class="c-val">Aarhus, Denmark</span>
+        </div>
+        <div class="c-row">
+          <span class="c-key">Portfolio</span>
+          <span class="c-val">facundoayala.dk</span>
+        </div>
+        <div class="c-row">
+          <span class="c-key">LinkedIn</span>
+          <span class="c-val">Facundo Ayala Munoz</span>
+        </div>
+      </div>
+
+      <div class="sb-block">
+        <span class="sb-label">Tools</span>
+        <div class="tools">
+          <span class="tool">Figma</span>
+          <span class="tool">Illustrator</span>
+          <span class="tool">Photoshop</span>
+          <span class="tool">InDesign</span>
+          <span class="tool">After Effects</span>
+          <span class="tool">Premiere Pro</span>
+          <span class="tool">HTML / CSS</span>
+          <span class="tool">JavaScript</span>
+          <span class="tool">Vue.js</span>
+          <span class="tool">WordPress</span>
+          <span class="tool">Firebase</span>
+          <span class="tool">Git</span>
+        </div>
+      </div>
+
+      <div class="sb-block">
+        <span class="sb-label">Languages</span>
+        <div class="lang-row">
+          <span class="lang-name">Spanish</span>
+          <span class="lang-lvl">Native</span>
+        </div>
+        <div class="lang-row">
+          <span class="lang-name">English</span>
+          <span class="lang-lvl">Professional</span>
+        </div>
+        <div class="lang-row">
+          <span class="lang-name">Danish</span>
+          <span class="lang-lvl">Basic</span>
+        </div>
+      </div>
+
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <div class="m-head">
+      <h1 class="m-name">Facundo<br>Ayala Munoz</h1>
+      <p class="m-role">Multimedia Designer</p>
+    </div>
+
+    <div class="sec">
+      <h2 class="sec-title">Profile</h2>
+      <p class="profile-p">Multimedia designer covering UX, frontend development, graphic design, motion, digital marketing and content creation. Grew up in Argentina, studying in Denmark, with years in hospitality and retail before design school. That combination gives a broad perspective and a habit of connecting things that don't usually belong together. Currently studying at EASV and working with real clients on the side.</p>
+    </div>
+
+    <div class="sec">
+      <h2 class="sec-title">Selected Competencies</h2>
+      <div class="comp-grid">
+        <span class="comp">UI/UX Design</span>
+        <span class="comp">Frontend Development</span>
+        <span class="comp">Brand Identity</span>
+        <span class="comp">Visual Design</span>
+        <span class="comp">Information Design</span>
+        <span class="comp">Motion Design</span>
+        <span class="comp">Digital Marketing</span>
+        <span class="comp">Content Creation</span>
+        <span class="comp">UX Research</span>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h2 class="sec-title">Education</h2>
+      <div class="t-item">
+        <span class="t-date">2023<br>to present</span>
+        <div class="t-body">
+          <h4>AP Degree in Multimedia Design</h4>
+          <p class="t-place">EASV, Business Academy SouthWest, Esbjerg, DK</p>
+          <p class="t-focus">UX/UI Design and Research · Brand Identity · Frontend Development</p>
+        </div>
+      </div>
+      <div class="t-item">
+        <span class="t-date">2021</span>
+        <div class="t-body">
+          <h4>High School Diploma, Business and Economy</h4>
+          <p class="t-place">Instituto Nuestra Senora de Lujan, Argentina</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h2 class="sec-title">Experience</h2>
+      <div class="t-item">
+        <span class="t-date">2024<br>to present</span>
+        <div class="t-body">
+          <h4>Freelance Multimedia Designer</h4>
+          <p class="t-place">Self-Employed, Aarhus, DK</p>
+          <p class="t-desc">Work directly with clients to turn abstract concepts into tangible digital experiences and visual identities. Projects span web design, brand identity, UX research and frontend development.</p>
+        </div>
+      </div>
+      <div class="t-item">
+        <span class="t-date">2024<br>to present</span>
+        <div class="t-body">
+          <h4>Retail Sales Assistant and Visual Stylist</h4>
+          <p class="t-place">Uniq, Aarhus, DK</p>
+          <p class="t-desc">Curate store layouts and style inventory using trend analysis to build on-brand visual narratives for customers.</p>
+        </div>
+      </div>
+      <div class="t-item">
+        <span class="t-date">Aug 2022<br>Oct 2023</span>
+        <div class="t-body">
+          <h4>Restaurant Manager</h4>
+          <p class="t-place">Bar Habla, Aarhus, DK</p>
+          <p class="t-desc">Led teams under pressure in a high-volume hospitality environment. Managed daily operations and prioritized end-to-end customer experience.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h2 class="sec-title">About Me</h2>
+      <p class="about-p">Creative inside and outside of work. Into DIY art projects, illustration, outdoor activities and hands-on making that has nothing to do with a screen. That same curiosity drives the design work.</p>
+    </div>
+
+    <p class="ref">References available upon request</p>
+
+  </main>
+</div>
+</body>
+</html>
