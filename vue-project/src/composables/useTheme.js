@@ -2,8 +2,8 @@ import { ref, computed, watch } from 'vue'
 
 const _theme = ref(
   typeof localStorage !== 'undefined'
-    ? (localStorage.getItem('portfolio-theme') || 'night')
-    : 'night'
+    ? (localStorage.getItem('portfolio-theme') || 'day')
+    : 'day'
 )
 
 // page-load cloud wipe (used by PageLoader)

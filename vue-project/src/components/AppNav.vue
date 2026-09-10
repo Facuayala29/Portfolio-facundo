@@ -79,7 +79,7 @@
         </li>
       </ul>
       <div class="menu-dropdown__footer">
-        <a href="/cv-facundo-ayala.pdf" download class="menu-footer-cv">
+        <a :href="locale === 'ES' ? '/cv-facundo-ayala-es.pdf' : '/cv-facundo-ayala-en.pdf'" download class="menu-footer-cv">
           <span>Download CV</span>
           <span class="cv-arrow">↓</span>
         </a>
