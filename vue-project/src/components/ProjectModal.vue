@@ -29,7 +29,7 @@
                 <template v-for="(src, i) in project.images" :key="i">
                   <a v-if="src.endsWith('.pdf')" :href="src" target="_blank" class="modal-img-btn modal-pdf-tile">
                     <span class="modal-pdf-icon">PDF</span>
-                    <span class="modal-pdf-name">View PDF ↗</span>
+                    <span class="modal-pdf-name">{{ project.pdfLabel || 'View PDF' }} ↗</span>
                   </a>
                   <button v-else-if="src.endsWith('.mp4')" class="modal-img-btn modal-video-tile" @click="openLightbox(i)">
                     <video :src="src" class="modal-img modal-video-thumb" muted preload="metadata" />

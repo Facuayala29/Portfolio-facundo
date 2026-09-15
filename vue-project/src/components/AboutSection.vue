@@ -36,6 +36,14 @@
                 <span class="word-span">{{ word }}</span>{{ ' ' }}
               </template>
             </p>
+            <a
+              :href="locale === 'ES' ? '/cv-facundo-ayala-es.pdf' : '/cv-facundo-ayala-en.pdf'"
+              download
+              class="about__cv-btn"
+            >
+              <span>{{ t('about.cvBtn') }}</span>
+              <span class="about__cv-arrow" aria-hidden="true">↓</span>
+            </a>
           </div>
         </div>
 
@@ -49,7 +57,7 @@ import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { useI18n } from '../composables/useI18n.js'
 import { useTheme } from '../composables/useTheme.js'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const { isDay } = useTheme()
 
 const aboutEl = ref(null)
@@ -379,6 +387,38 @@ onUnmounted(() => {
 .word-span {
   display: inline;
   color: rgba(245,245,240,0.15);
+}
+
+.about__cv-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: 2.2rem;
+  padding: 0.65rem 1.4rem;
+  border: 1px solid rgba(196, 122, 21, 0.5);
+  border-radius: 2rem;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--white) 60%, transparent);
+  text-decoration: none;
+  cursor: none;
+  transition: color 0.25s, border-color 0.25s, background 0.25s;
+}
+.about__cv-btn:hover {
+  color: var(--white);
+  border-color: var(--red);
+  background: rgba(196, 122, 21, 0.08);
+}
+.about__cv-arrow {
+  color: var(--red);
+  font-size: 0.9rem;
+  transition: transform 0.25s var(--ease-out);
+}
+.about__cv-btn:hover .about__cv-arrow {
+  transform: translateY(3px);
 }
 
 @media (max-width: 768px) {
