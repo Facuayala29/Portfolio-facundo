@@ -6,6 +6,13 @@
     </a>
 
     <div class="nav__controls">
+      <!-- Language switcher -->
+      <div class="nav__lang">
+        <button class="nav__lang-btn" :class="{ active: locale === 'EN' }" @click="setLocale('EN')">EN</button>
+        <span class="nav__lang-sep"></span>
+        <button class="nav__lang-btn" :class="{ active: locale === 'ES' }" @click="setLocale('ES')">ES</button>
+      </div>
+
       <!-- Apple-style pill toggle -->
       <button
         class="nav__toggle"
@@ -59,11 +66,6 @@
       aria-label="Navigation menu"
       @click.stop
     >
-      <div class="menu-lang">
-        <button class="menu-lang-btn" :class="{ active: locale === 'EN' }" @click="setLocale('EN')">EN</button>
-        <span class="menu-lang-sep">|</span>
-        <button class="menu-lang-btn" :class="{ active: locale === 'ES' }" @click="setLocale('ES')">ES</button>
-      </div>
       <ul class="menu-list" role="list">
         <li v-for="item in menuItems" :key="item.key" class="menu-item">
           <a
@@ -277,22 +279,33 @@ onUnmounted(() => {
 }
 .menu-link:hover .menu-link__arrow { opacity: 1; transform: translate(0, 0); }
 
-.menu-lang {
-  display: flex; align-items: center; gap: 0.2rem;
-  padding: 0.55rem 1.45rem 0.4rem;
-  border-bottom: 1px solid color-mix(in srgb, var(--white) 6%, transparent);
-  margin-bottom: 0.2rem;
+/* ── nav language switcher ──────────────────────────────────────────────────── */
+.nav__lang {
+  display: flex; align-items: center; gap: 0;
+  background: color-mix(in srgb, var(--white) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--white) 14%, transparent);
+  border-radius: 999px;
+  padding: 0.18rem 0.25rem;
 }
-.menu-lang-btn {
+.nav__lang-btn {
   background: none; border: none; cursor: none;
-  color: color-mix(in srgb, var(--white) 28%, transparent);
-  font-size: 0.58rem; letter-spacing: 0.14em;
-  font-family: var(--font-body); padding: 0.15rem 0.05rem;
-  transition: color 0.25s;
+  font-family: var(--font-body);
+  font-size: 0.6rem; font-weight: 500; letter-spacing: 0.14em;
+  padding: 0.22rem 0.6rem;
+  border-radius: 999px;
+  color: color-mix(in srgb, var(--white) 35%, transparent);
+  transition: color 0.2s, background 0.2s;
 }
-.menu-lang-btn:hover { color: color-mix(in srgb, var(--white) 65%, transparent); }
-.menu-lang-btn.active { color: var(--white); }
-.menu-lang-sep { font-size: 0.48rem; color: color-mix(in srgb, var(--white) 12%, transparent); user-select: none; }
+.nav__lang-btn:hover { color: color-mix(in srgb, var(--white) 70%, transparent); }
+.nav__lang-btn.active {
+  background: color-mix(in srgb, var(--white) 15%, transparent);
+  color: var(--white);
+}
+.nav__lang-sep {
+  width: 1px; height: 10px;
+  background: color-mix(in srgb, var(--white) 12%, transparent);
+  flex-shrink: 0;
+}
 
 .menu-dropdown__footer {
   border-top: 1px solid color-mix(in srgb, var(--white) 7%, transparent);

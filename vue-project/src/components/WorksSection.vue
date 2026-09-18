@@ -125,9 +125,9 @@ const dayBase = {
 }
 
 const cardImages = [
-  { cardImage: '/businessdedk/banner.png', images: ['/businessdedk/banner.png', '/businessdedk/badge.png', '/businessdedk/businesscard.png', '/businessdedk/newsletter.png', '/businessdedk/brochure.png', '/businessdedk/thermos.png', '/businessdedk/pen.png', '/businessdedk/social-calendar.pdf'], pdfLabel: 'View the social calendar' },
+  { cardImage: '/businessdedk/banner.png', images: ['/businessdedk/banner.png', '/businessdedk/badge.png', '/businessdedk/businesscard.png', '/businessdedk/newsletter.png', '/businessdedk/brochure.png', '/businessdedk/thermos.png', '/businessdedk/pen.png', '/businessdedk/social-calendar.pdf'] },
   { cardImage: '/mario/card.webp', images: ['/mario/sketch.jpeg', '/mario/poster.webp', '/mario/print.jpeg', '/mario/card.webp'] },
-  { cardImage: '/core/mockup.webp', images: ['/core/logo.webp', '/core/magazine.pdf', '/core/magazine-cover.webp', '/core/mockup.webp'], pdfLabel: 'Check the magazine' },
+  { cardImage: '/core/mockup.webp', images: ['/core/logo.webp', '/core/magazine.pdf', '/core/magazine-cover.webp', '/core/mockup.webp'] },
   { cardImage: '/urbanecho/mockup.webp', images: ['/urbanecho/sketch1.jpeg', '/urbanecho/sketch2.jpeg', '/urbanecho/mockup.webp', '/urbanecho/video.mp4', '/urbanecho/video2.mp4'] },
   { cardImage: '/greenloop/mockup.webp', images: ['/greenloop/sketch.jpeg', '/greenloop/logo-green.webp', '/greenloop/mockup.webp'] },
 ]

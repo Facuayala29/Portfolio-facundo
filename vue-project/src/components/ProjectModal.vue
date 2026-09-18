@@ -13,23 +13,23 @@
           <h2 class="modal-title">{{ project.i18n.title }}</h2>
 
           <div class="modal-section">
-            <span class="modal-section__label">Brief</span>
+            <span class="modal-section__label">{{ t('modal.brief') }}</span>
             <p class="modal-section__text">{{ project.i18n.desc }}</p>
           </div>
 
           <div class="modal-section">
-            <span class="modal-section__label">Objective</span>
+            <span class="modal-section__label">{{ t('modal.objective') }}</span>
             <p class="modal-section__text">{{ project.i18n.objective }}</p>
           </div>
 
           <div class="modal-section">
-            <span class="modal-section__label">Sketches and Mockups</span>
+            <span class="modal-section__label">{{ t('modal.sketches') }}</span>
             <div class="modal-images-grid">
               <template v-if="project.images?.length">
                 <template v-for="(src, i) in project.images" :key="i">
                   <a v-if="src.endsWith('.pdf')" :href="src" target="_blank" class="modal-img-btn modal-pdf-tile">
                     <span class="modal-pdf-icon">PDF</span>
-                    <span class="modal-pdf-name">{{ project.pdfLabel || 'View PDF' }} ↗</span>
+                    <span class="modal-pdf-name">{{ project.i18n.pdfLabel || 'View PDF' }} ↗</span>
                   </a>
                   <button v-else-if="src.endsWith('.mp4')" class="modal-img-btn modal-video-tile" @click="openLightbox(i)">
                     <video :src="src" class="modal-img modal-video-thumb" muted preload="metadata" />
@@ -50,7 +50,7 @@
           </div>
 
           <div class="modal-section">
-            <span class="modal-section__label">Outcome</span>
+            <span class="modal-section__label">{{ t('modal.outcome') }}</span>
             <p class="modal-section__text">{{ project.i18n.outcome }}</p>
           </div>
 
@@ -79,8 +79,11 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import { useI18n } from '../composables/useI18n.js'
 const props = defineProps({ project: { type: Object, default: null } })
 defineEmits(['close'])
+
+const { t } = useI18n()
 
 const lightboxIdx = ref(null)
 
@@ -303,6 +306,9 @@ function openLightbox(gridIdx) {
 .modal-pdf-name {
   font-size: 0.62rem;
   letter-spacing: 0.1em;
+  color: rgba(26,42,74,0.55);
+}
+:root[data-theme="day"] .modal-pdf-name {
   color: rgba(240,232,208,0.65);
 }
 

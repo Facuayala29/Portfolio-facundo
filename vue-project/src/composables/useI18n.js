@@ -46,6 +46,7 @@ const translations = {
           desc: 'Real client, real exam. A failing cross border website rebuilt from scratch: trilingual, SEO optimised, with a full brand campaign delivered in four weeks.',
           objective: 'Design without strategy is decoration. Before touching any tool, we audited the live site, ran a Q&A with the client, mapped user journeys, and built a MoSCoW model to separate what actually mattered from what could wait. Every decision after that, from navigation architecture to keyword research, had to justify itself. The visual language came last.',
           outcome: 'A production ready trilingual website (DK/DE/EN) with full SEO implementation, print ready brand materials, a digital campaign, and complete documentation, delivered to the client within a four week Scrum sprint.',
+          pdfLabel: 'View the social calendar',
           tags: ['UX Research', 'Web Design', 'Campaign'],
         },
         {
@@ -62,6 +63,7 @@ const translations = {
           desc: 'A printed district brochure for Esbjerg targeting young adults. Not a city guide. A brand identity built from scratch with custom illustrations throughout.',
           objective: 'The brief asked for a brochure. The outcome was something closer to an editorial. Every illustration and layout decision pointed toward one feeling: personal, curated, a little unexpected. The kind of work people actually hold onto.',
           outcome: 'A multipage brochure featuring original illustrations, a defined brand identity, and editorial typography, a cohesive print piece that successfully repositioned a city district for a younger, design conscious audience.',
+          pdfLabel: 'Check the magazine',
           tags: ['Branding', 'Illustration', 'Print'],
         },
 
@@ -82,6 +84,12 @@ const translations = {
           tags: ['Sustainability', 'Branding', 'Concept'],
         },
       ],
+    },
+    modal: {
+      brief: 'Brief',
+      objective: 'Objective',
+      sketches: 'Sketches and Mockups',
+      outcome: 'Outcome',
     },
     skills: {
       title: 'Skill {set}',
@@ -138,6 +146,7 @@ const translations = {
           desc: 'Cliente real, examen real. Un sitio web fallido reconstruido desde cero: trilingüe, optimizado para SEO, con una campaña de marca completa entregada en cuatro semanas.',
           objective: 'El diseño sin estrategia es decoración. Antes de tocar ninguna herramienta, auditamos el sitio en vivo, entrevistamos al cliente, mapeamos recorridos de usuario y construimos un modelo MoSCoW para separar lo importante de lo accesorio. Cada decisión posterior tuvo que justificarse. El lenguaje visual vino al final.',
           outcome: 'Un sitio web trilingüe (DK/DE/EN) listo para producción, con SEO implementado, materiales de marca listos para imprenta, una campaña digital y documentación completa, entregado al cliente en un sprint de cuatro semanas con metodología Scrum.',
+          pdfLabel: 'Ver el calendario social',
           tags: ['Investigación UX', 'Diseño Web', 'Campaña'],
         },
         {
@@ -154,6 +163,7 @@ const translations = {
           desc: 'Un folleto impreso de distrito para Esbjerg dirigido a jóvenes adultos. No una guía turística. Una identidad de marca diseñada desde cero con ilustraciones propias en cada página.',
           objective: 'El brief pedía un folleto. El resultado fue algo más cercano a una editorial. Cada ilustración y decisión de layout apuntaba a una sola sensación: personal, curado, un poco inesperado. El tipo de trabajo que la gente realmente guarda.',
           outcome: 'Un folleto multipágina con ilustraciones originales, identidad de marca definida y tipografía editorial. Una pieza impresa cohesiva que reposicionó con éxito un distrito de la ciudad para una audiencia más joven y con conciencia de diseño.',
+          pdfLabel: 'Ver la revista',
           tags: ['Branding', 'Ilustración', 'Impresión'],
         },
 
@@ -174,6 +184,12 @@ const translations = {
           tags: ['Sostenibilidad', 'Branding', 'Concepto'],
         },
       ],
+    },
+    modal: {
+      brief: 'Brief',
+      objective: 'Objetivo',
+      sketches: 'Bocetos y Mockups',
+      outcome: 'Resultado',
     },
     skills: {
       title: 'Habilidades {set}',
