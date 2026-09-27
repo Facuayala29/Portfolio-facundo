@@ -18,7 +18,7 @@
               @click="openModal(project)"
             >
               <div class="works-card__visual" :style="{ background: project.bg }">
-                <img v-if="project.cardImage" :src="project.cardImage" :class="['wc-img', { 'wc-img--pixel': project.cardImage === '/mario/card.png', 'wc-img--contain': project.cardFit === 'contain', 'wc-img--top': project.cardImage.includes('businessdedk') }]" alt="" draggable="false" loading="lazy" decoding="async" />
+                <img v-if="project.cardImage" :src="project.cardImage" :class="['wc-img', { 'wc-img--pixel': project.cardImage === '/mario/card.png', 'wc-img--contain': project.cardFit === 'contain', 'wc-img--top': project.cardImage.includes('businessdedk') }]" :style="project.cardPos ? { objectPosition: project.cardPos } : null" alt="" draggable="false" loading="lazy" decoding="async" />
                 <template v-else>
                   <div class="wc-circle" :style="{ background: project.accent }"></div>
                   <div class="wc-bar"></div>
@@ -127,7 +127,7 @@ const dayBase = {
 const cardImages = [
   { cardImage: '/businessdedk/banner.png', images: ['/businessdedk/banner.png', '/businessdedk/badge.png', '/businessdedk/businesscard.png', '/businessdedk/newsletter.png', '/businessdedk/brochure.png', '/businessdedk/thermos.png', '/businessdedk/pen.png', '/businessdedk/social-calendar.pdf'] },
   { cardImage: '/mario/card.webp', images: ['/mario/sketch.jpeg', '/mario/poster.webp', '/mario/print.jpeg', '/mario/card.webp'] },
-  { cardImage: '/core/mockup.webp', images: ['/core/logo.webp', '/core/magazine.pdf', '/core/magazine-cover.webp', '/core/mockup.webp'] },
+  { cardImage: '/core/mockup.webp', cardPos: 'center 38%', images: ['/core/logo.webp', '/core/magazine.pdf', '/core/magazine-cover.webp', '/core/mockup.webp'] },
   { cardImage: '/urbanecho/mockup.webp', images: ['/urbanecho/sketch1.jpeg', '/urbanecho/sketch2.jpeg', '/urbanecho/mockup.webp', '/urbanecho/video.mp4', '/urbanecho/video2.mp4'] },
   { cardImage: '/greenloop/mockup.webp', images: ['/greenloop/sketch.jpeg', '/greenloop/logo-green.webp', '/greenloop/mockup.webp'] },
 ]

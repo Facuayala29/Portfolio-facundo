@@ -78,7 +78,7 @@
           </svg>
         </a>
       </div>
-      <p class="footer-copy">© 2025 Facundo Ayala Muñoz</p>
+      <p class="footer-copy">© {{ new Date().getFullYear() }} Facundo Ayala Muñoz</p>
     </footer>
 
   </section>

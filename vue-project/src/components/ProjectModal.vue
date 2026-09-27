@@ -22,6 +22,15 @@
             <p class="modal-section__text">{{ project.i18n.objective }}</p>
           </div>
 
+          <div v-if="project.i18n.process" class="modal-section">
+            <span class="modal-section__label">{{ t('modal.process') }}</span>
+            <p class="modal-section__text">{{ project.i18n.process }}</p>
+            <div v-if="project.i18n.tools?.length" class="modal-tools">
+              <span class="modal-tools__label">{{ t('modal.tools') }}</span>
+              <span v-for="tool in project.i18n.tools" :key="tool" class="modal-tag">{{ tool }}</span>
+            </div>
+          </div>
+
           <div class="modal-section">
             <span class="modal-section__label">{{ t('modal.sketches') }}</span>
             <div class="modal-images-grid">
@@ -207,6 +216,7 @@ function openLightbox(gridIdx) {
 .modal-section:nth-child(4) { animation-delay: 0.16s; }
 .modal-section:nth-child(5) { animation-delay: 0.24s; }
 .modal-section:nth-child(6) { animation-delay: 0.32s; }
+.modal-section:nth-child(7) { animation-delay: 0.40s; }
 @keyframes sectionReveal {
   to { opacity: 1; transform: none; }
 }
@@ -335,6 +345,22 @@ function openLightbox(gridIdx) {
   letter-spacing: 0.06em;
   color: rgba(26,42,74,0.60);
 }
+
+.modal-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.4rem;
+}
+.modal-tools__label {
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  margin-right: 0.3rem;
+}
+:root[data-theme="day"] .modal-tools__label { color: rgba(240,232,208,0.75); }
 
 .lightbox {
   position: fixed;
