@@ -102,6 +102,7 @@ const translations = {
       outcome: 'Outcome',
       process: 'Process',
       tools: 'Tools',
+      zoom: 'View full size',
     },
     skills: {
       title: 'Skill {set}',
@@ -214,6 +215,7 @@ const translations = {
       outcome: 'Resultado',
       process: 'Proceso',
       tools: 'Herramientas',
+      zoom: 'Ver en grande',
     },
     skills: {
       title: 'Habilidades {set}',
